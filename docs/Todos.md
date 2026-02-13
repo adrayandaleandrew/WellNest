@@ -124,9 +124,9 @@ Establish stable project setup.
 
 ### Backend Setup
 
-- [ ] Create Firebase project
-- [ ] Enable Auth
-- [ ] Enable Firestore
+- [x] Create Firebase project
+- [x] Enable Auth
+- [x] Enable Firestore
 - [x] Base security rules
 - [x] Environment configs
 
@@ -169,13 +169,13 @@ Users can securely sign up and log in.
 
 ## Tasks
 
-- [ ] Register screen
-- [ ] Login screen
-- [ ] Validation
-- [ ] Firebase Auth integration
-- [ ] Session persistence
-- [ ] Logout flow
-- [ ] Protected routes
+- [x] Register screen
+- [x] Login screen
+- [x] Validation
+- [x] Firebase Auth integration
+- [x] Session persistence
+- [x] Logout flow
+- [x] Protected routes
 
 ---
 
