@@ -74,6 +74,16 @@ Comment WHY, not WHAT.
 
 ---
 
+# TypeScript
+
+- Never use `any` — always type properly
+- Use `interface` or `type` for all data shapes
+- Prefer `unknown` over `any` when type is uncertain
+- Enable strict mode in `tsconfig.json`
+- Use `type` keyword for type-only imports (`import type { ... }`)
+
+---
+
 # Rule
 
 Readable code today > smart code tomorrow.

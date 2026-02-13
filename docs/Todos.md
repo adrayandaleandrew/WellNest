@@ -114,11 +114,11 @@ Establish stable project setup.
 
 ### Repo
 
-- [ ] Setup monorepo structure
-- [ ] Add docs folder
-- [ ] Add markdown standards
-- [ ] Configure .gitignore
-- [ ] Create README
+- [x] Setup monorepo structure
+- [x] Add docs folder
+- [x] Add markdown standards
+- [x] Configure .gitignore
+- [x] Create README
 
 ---
 
@@ -127,25 +127,25 @@ Establish stable project setup.
 - [ ] Create Firebase project
 - [ ] Enable Auth
 - [ ] Enable Firestore
-- [ ] Base security rules
-- [ ] Environment configs
+- [x] Base security rules
+- [x] Environment configs
 
 ---
 
 ### Mobile Setup
 
-- [ ] Initialize Expo app
-- [ ] Setup navigation
-- [ ] Theme system
-- [ ] Feature-based folders
+- [x] Initialize Expo app
+- [x] Setup navigation
+- [x] Theme system
+- [x] Feature-based folders
 
 ---
 
 ### Admin Setup
 
-- [ ] Initialize React app
-- [ ] Setup Tailwind
-- [ ] Routing system
+- [x] Initialize React app
+- [x] Setup Tailwind
+- [x] Routing system
 
 ---
 
