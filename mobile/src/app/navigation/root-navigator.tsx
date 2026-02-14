@@ -8,13 +8,22 @@ import HomeScreen from '../../features/home/screens/home-screen';
 import SettingsScreen from '../../features/settings/screens/settings-screen';
 import ProfileScreen from '../../features/profile/screens/profile-screen';
 import EditProfileScreen from '../../features/profile/screens/edit-profile-screen';
+import WorkoutListScreen from '../../features/workout/screens/workout-list-screen';
+import WorkoutDetailScreen from '../../features/workout/screens/workout-detail-screen';
+import WorkoutModeScreen from '../../features/workout/screens/workout-mode-screen';
+import WorkoutCompleteScreen from '../../features/workout/screens/workout-complete-screen';
 import { colors } from '../../shared/constants/theme';
+import type { Workout, WorkoutSessionSummary } from '../../shared/types/workout';
 
 export type MainStackParamList = {
   Home: undefined;
   Settings: undefined;
   Profile: undefined;
   EditProfile: undefined;
+  WorkoutList: undefined;
+  WorkoutDetail: { workout: Workout };
+  WorkoutMode: { workout: Workout };
+  WorkoutComplete: { summary: WorkoutSessionSummary; workoutId: string };
 };
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
@@ -32,6 +41,10 @@ function MainNavigator() {
       <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: 'Settings' }} />
       <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'My Profile' }} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} options={{ title: 'Edit Profile' }} />
+      <Stack.Screen name="WorkoutList" component={WorkoutListScreen} options={{ title: 'Workouts' }} />
+      <Stack.Screen name="WorkoutDetail" component={WorkoutDetailScreen} options={{ title: 'Workout Details' }} />
+      <Stack.Screen name="WorkoutMode" component={WorkoutModeScreen} options={{ headerShown: false, presentation: 'fullScreenModal' }} />
+      <Stack.Screen name="WorkoutComplete" component={WorkoutCompleteScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

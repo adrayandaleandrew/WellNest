@@ -10,8 +10,11 @@ export default function HomeScreen({ navigation }: Props) {
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to WellNest</Text>
       <Text style={styles.subtitle}>Your health & fitness companion</Text>
-      <Pressable style={styles.button} onPress={() => navigation.navigate('Settings')}>
-        <Text style={styles.buttonText}>Go to Settings</Text>
+      <Pressable style={styles.button} onPress={() => navigation.navigate('WorkoutList')}>
+        <Text style={styles.buttonText}>Workouts</Text>
+      </Pressable>
+      <Pressable style={styles.secondaryButton} onPress={() => navigation.navigate('Settings')}>
+        <Text style={styles.secondaryButtonText}>Settings</Text>
       </Pressable>
     </View>
   );
@@ -44,6 +47,16 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: colors.text.inverse,
+    fontSize: typography.fontSize.md,
+    fontWeight: typography.fontWeight.semibold,
+  },
+  secondaryButton: {
+    marginTop: spacing.sm,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.xl,
+  },
+  secondaryButtonText: {
+    color: colors.primary,
     fontSize: typography.fontSize.md,
     fontWeight: typography.fontWeight.semibold,
   },
