@@ -1,0 +1,265 @@
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../services/firebase';
+import type { Workout } from '../types/workout';
+
+type SeedWorkout = Omit<Workout, 'id'> & { id: string };
+
+const SEED_WORKOUTS: SeedWorkout[] = [
+  {
+    id: 'full-body-beginner',
+    name: 'Full Body Beginner',
+    description: 'A balanced full-body workout perfect for beginners. Covers all major muscle groups with simple movements.',
+    difficulty: 'beginner',
+    durationMinutes: 25,
+    muscleGroups: ['full_body'],
+    exercises: [
+      {
+        name: 'Jumping Jacks',
+        sets: 2,
+        reps: 20,
+        durationSeconds: null,
+        restSeconds: 30,
+        description: 'Stand with feet together, jump while spreading arms and legs, then return to start.',
+      },
+      {
+        name: 'Bodyweight Squats',
+        sets: 3,
+        reps: 12,
+        durationSeconds: null,
+        restSeconds: 45,
+        description: 'Stand with feet shoulder-width apart, lower your hips as if sitting in a chair, then stand back up.',
+      },
+      {
+        name: 'Push-ups',
+        sets: 3,
+        reps: 10,
+        durationSeconds: null,
+        restSeconds: 45,
+        description: 'Start in a plank position, lower your chest to the floor, then push back up. Modify on knees if needed.',
+      },
+      {
+        name: 'Plank Hold',
+        sets: 2,
+        reps: null,
+        durationSeconds: 30,
+        restSeconds: 30,
+        description: 'Hold a straight-arm or forearm plank, keeping your body in a straight line from head to heels.',
+      },
+      {
+        name: 'Lunges',
+        sets: 3,
+        reps: 10,
+        durationSeconds: null,
+        restSeconds: 45,
+        description: 'Step forward with one leg, lower your back knee toward the floor, then push back to standing. Alternate legs.',
+      },
+    ],
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'core-crusher',
+    name: 'Core Crusher',
+    description: 'Target your abs and core with this focused routine. Great for building a strong foundation.',
+    difficulty: 'beginner',
+    durationMinutes: 20,
+    muscleGroups: ['core'],
+    exercises: [
+      {
+        name: 'Crunches',
+        sets: 3,
+        reps: 15,
+        durationSeconds: null,
+        restSeconds: 30,
+        description: 'Lie on your back with knees bent, curl your shoulders off the floor, then lower back down.',
+      },
+      {
+        name: 'Bicycle Crunches',
+        sets: 3,
+        reps: 12,
+        durationSeconds: null,
+        restSeconds: 30,
+        description: 'Lie on your back, bring opposite elbow to knee while extending the other leg. Alternate sides.',
+      },
+      {
+        name: 'Plank Hold',
+        sets: 3,
+        reps: null,
+        durationSeconds: 30,
+        restSeconds: 30,
+        description: 'Hold a forearm plank, keeping your body in a straight line. Engage your core throughout.',
+      },
+      {
+        name: 'Mountain Climbers',
+        sets: 2,
+        reps: 20,
+        durationSeconds: null,
+        restSeconds: 30,
+        description: 'In a plank position, alternate driving your knees toward your chest in a running motion.',
+      },
+      {
+        name: 'Dead Bug',
+        sets: 3,
+        reps: 10,
+        durationSeconds: null,
+        restSeconds: 30,
+        description: 'Lie on your back with arms and legs raised. Slowly lower opposite arm and leg, then return. Alternate sides.',
+      },
+    ],
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'upper-body-strength',
+    name: 'Upper Body Strength',
+    description: 'Build strength in your chest, shoulders, and arms with bodyweight exercises.',
+    difficulty: 'intermediate',
+    durationMinutes: 30,
+    muscleGroups: ['chest', 'shoulders', 'arms'],
+    exercises: [
+      {
+        name: 'Push-ups',
+        sets: 4,
+        reps: 12,
+        durationSeconds: null,
+        restSeconds: 45,
+        description: 'Standard push-ups with hands shoulder-width apart. Keep your core tight throughout.',
+      },
+      {
+        name: 'Diamond Push-ups',
+        sets: 3,
+        reps: 8,
+        durationSeconds: null,
+        restSeconds: 60,
+        description: 'Place hands close together forming a diamond shape under your chest. Great for triceps.',
+      },
+      {
+        name: 'Pike Push-ups',
+        sets: 3,
+        reps: 8,
+        durationSeconds: null,
+        restSeconds: 60,
+        description: 'Start in a downward dog position, bend your arms to lower your head toward the floor. Targets shoulders.',
+      },
+      {
+        name: 'Tricep Dips',
+        sets: 3,
+        reps: 10,
+        durationSeconds: null,
+        restSeconds: 45,
+        description: 'Use a chair or bench. Lower your body by bending your elbows, then push back up.',
+      },
+      {
+        name: 'Arm Circles',
+        sets: 2,
+        reps: null,
+        durationSeconds: 30,
+        restSeconds: 30,
+        description: 'Extend arms to the sides and make small circles, gradually increasing size. Switch direction halfway.',
+      },
+    ],
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'lower-body-burn',
+    name: 'Lower Body Burn',
+    description: 'Strengthen and tone your legs and glutes with this targeted lower body session.',
+    difficulty: 'intermediate',
+    durationMinutes: 30,
+    muscleGroups: ['legs'],
+    exercises: [
+      {
+        name: 'Bodyweight Squats',
+        sets: 4,
+        reps: 15,
+        durationSeconds: null,
+        restSeconds: 45,
+        description: 'Feet shoulder-width apart, lower until thighs are parallel to the floor, then drive up.',
+      },
+      {
+        name: 'Reverse Lunges',
+        sets: 3,
+        reps: 12,
+        durationSeconds: null,
+        restSeconds: 45,
+        description: 'Step backward into a lunge, lowering your back knee toward the floor. Alternate legs each rep.',
+      },
+      {
+        name: 'Glute Bridges',
+        sets: 3,
+        reps: 15,
+        durationSeconds: null,
+        restSeconds: 30,
+        description: 'Lie on your back with knees bent. Lift your hips toward the ceiling, squeeze glutes at the top.',
+      },
+      {
+        name: 'Wall Sit',
+        sets: 3,
+        reps: null,
+        durationSeconds: 30,
+        restSeconds: 45,
+        description: 'Lean against a wall with knees bent at 90 degrees. Hold the position, keeping your back flat.',
+      },
+      {
+        name: 'Calf Raises',
+        sets: 3,
+        reps: 20,
+        durationSeconds: null,
+        restSeconds: 30,
+        description: 'Stand on the edge of a step or flat ground. Rise up on your toes, then lower back down slowly.',
+      },
+    ],
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'quick-cardio',
+    name: 'Quick Cardio',
+    description: 'Get your heart pumping with this fast-paced cardio session. No equipment needed.',
+    difficulty: 'beginner',
+    durationMinutes: 15,
+    muscleGroups: ['cardio', 'full_body'],
+    exercises: [
+      {
+        name: 'High Knees',
+        sets: 3,
+        reps: null,
+        durationSeconds: 30,
+        restSeconds: 20,
+        description: 'Run in place, driving your knees up to waist height as fast as you can.',
+      },
+      {
+        name: 'Burpees',
+        sets: 3,
+        reps: 8,
+        durationSeconds: null,
+        restSeconds: 45,
+        description: 'From standing, drop into a push-up, then jump back up with arms overhead.',
+      },
+      {
+        name: 'Jumping Jacks',
+        sets: 3,
+        reps: null,
+        durationSeconds: 30,
+        restSeconds: 20,
+        description: 'Jump while spreading arms and legs wide, then jump back to the starting position.',
+      },
+      {
+        name: 'Squat Jumps',
+        sets: 3,
+        reps: 10,
+        durationSeconds: null,
+        restSeconds: 30,
+        description: 'Perform a squat, then explode upward into a jump. Land softly and repeat.',
+      },
+    ],
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+];
+
+export { SEED_WORKOUTS };
+
+export async function seedWorkouts(): Promise<void> {
+  const promises = SEED_WORKOUTS.map((workout) => {
+    const { id, ...data } = workout;
+    return setDoc(doc(db, 'workouts', id), data);
+  });
+  await Promise.all(promises);
+}
