@@ -1,8 +1,12 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { MainStackParamList } from '../../../app/navigation/root-navigator';
 import { useAuth } from '../../../shared/contexts/auth-context';
 import { colors, spacing, typography, borderRadius } from '../../../shared/constants/theme';
 
-export default function SettingsScreen() {
+type Props = NativeStackScreenProps<MainStackParamList, 'Settings'>;
+
+export default function SettingsScreen({ navigation }: Props) {
   const { user, logout } = useAuth();
 
   async function handleLogout() {
@@ -15,6 +19,12 @@ export default function SettingsScreen() {
         <Text style={styles.label}>Signed in as</Text>
         <Text style={styles.email}>{user?.email}</Text>
       </View>
+      <Pressable
+        style={styles.menuItem}
+        onPress={() => navigation.navigate('Profile')}
+      >
+        <Text style={styles.menuItemText}>My Profile</Text>
+      </Pressable>
       <Pressable style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutText}>Log Out</Text>
       </Pressable>
@@ -46,11 +56,25 @@ const styles = StyleSheet.create({
     fontWeight: typography.fontWeight.medium,
     color: colors.text.primary,
   },
+  menuItem: {
+    backgroundColor: colors.surface,
+    padding: spacing.md,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    marginBottom: spacing.sm,
+  },
+  menuItemText: {
+    fontSize: typography.fontSize.md,
+    fontWeight: typography.fontWeight.medium,
+    color: colors.primary,
+  },
   logoutButton: {
     backgroundColor: colors.error,
     paddingVertical: spacing.md,
     borderRadius: borderRadius.md,
     alignItems: 'center',
+    marginTop: spacing.sm,
   },
   logoutText: {
     color: colors.text.inverse,
