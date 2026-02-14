@@ -1,15 +1,18 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { AuthProvider } from './src/shared/contexts/auth-context';
+import { ProfileProvider } from './src/shared/contexts/profile-context';
 import RootNavigator from './src/app/navigation/root-navigator';
 
 export default function App() {
   return (
     <AuthProvider>
-      <NavigationContainer>
-        <RootNavigator />
-        <StatusBar style="auto" />
-      </NavigationContainer>
+      <ProfileProvider>
+        <NavigationContainer>
+          <RootNavigator />
+          <StatusBar style="auto" />
+        </NavigationContainer>
+      </ProfileProvider>
     </AuthProvider>
   );
 }
