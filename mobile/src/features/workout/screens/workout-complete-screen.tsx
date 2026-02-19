@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { MainStackParamList } from '../../../app/navigation/root-navigator';
 import { useAuth } from '../../../shared/contexts/auth-context';
+import { useStreak } from '../../../shared/contexts/streak-context';
 import { saveWorkoutLog } from '../../../shared/services/workout-service';
 import { formatDuration } from '../../../shared/utils/workout-utils';
 import type { WorkoutLog } from '../../../shared/types/workout';
@@ -14,6 +15,7 @@ type Props = NativeStackScreenProps<MainStackParamList, 'WorkoutComplete'>;
 export default function WorkoutCompleteScreen({ route, navigation }: Props) {
   const { summary, workoutId } = route.params;
   const { user } = useAuth();
+  const { logToday } = useStreak();
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,7 +32,8 @@ export default function WorkoutCompleteScreen({ route, navigation }: Props) {
         durationSeconds: summary.durationSeconds,
         completedAt: new Date().toISOString(),
       };
-      await saveWorkoutLog(user.uid, log);
+      // Save detailed workout log and update today's daily log + streak in parallel
+      await Promise.all([saveWorkoutLog(user.uid, log), logToday('workout')]);
       navigation.popToTop();
     } catch {
       setError('Failed to save workout log. Please try again.');
