@@ -353,10 +353,10 @@ Show measurable progress.
 
 ## Tasks
 
-- [ ] Add weight entry
-- [ ] Save logs
-- [ ] Graph view
-- [ ] History list
+- [x] Add weight entry
+- [x] Save logs
+- [x] Graph view
+- [x] History list
 
 ---
 

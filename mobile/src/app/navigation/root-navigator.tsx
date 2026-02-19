@@ -14,6 +14,7 @@ import WorkoutModeScreen from '../../features/workout/screens/workout-mode-scree
 import WorkoutCompleteScreen from '../../features/workout/screens/workout-complete-screen';
 import MealListScreen from '../../features/meal/screens/meal-list-screen';
 import MealDetailScreen from '../../features/meal/screens/meal-detail-screen';
+import WeightScreen from '../../features/weight/screens/weight-screen';
 import { colors } from '../../shared/constants/theme';
 import type { Workout, WorkoutSessionSummary } from '../../shared/types/workout';
 import type { Meal } from '../../shared/types/meal';
@@ -29,6 +30,7 @@ export type MainStackParamList = {
   WorkoutComplete: { summary: WorkoutSessionSummary; workoutId: string };
   MealList: undefined;
   MealDetail: { meal: Meal };
+  Weight: undefined;
 };
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
@@ -52,6 +54,7 @@ function MainNavigator() {
       <Stack.Screen name="WorkoutComplete" component={WorkoutCompleteScreen} options={{ headerShown: false }} />
       <Stack.Screen name="MealList" component={MealListScreen} options={{ title: 'Meals' }} />
       <Stack.Screen name="MealDetail" component={MealDetailScreen} options={{ title: 'Meal Details' }} />
+      <Stack.Screen name="Weight" component={WeightScreen} options={{ title: 'Weight' }} />
     </Stack.Navigator>
   );
 }
