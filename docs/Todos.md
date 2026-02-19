@@ -406,15 +406,15 @@ Ensure reliability.
 ## Tasks
 
 ### Unit
-- [ ] Utility tests
+- [x] Utility tests (validation, workout-utils, meal-utils, profile-utils)
 
 ### Integration
-- [ ] Auth tests
-- [ ] DB tests
+- [x] Auth tests (auth-service — Firebase mocked)
+- [x] DB tests (streak/log-service — Firestore mocked)
 
 ### E2E
-- [ ] Login flow
-- [ ] Workout flow
+- [x] Login flow (admin-login.spec.ts)
+- [x] Workout flow (admin-workouts.spec.ts)
 
 ---
 
