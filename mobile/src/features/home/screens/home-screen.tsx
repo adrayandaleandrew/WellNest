@@ -110,9 +110,13 @@ export default function HomeScreen({ navigation }: Props) {
 
         {/* Quick links */}
         <View style={styles.quickLinks}>
+          <Pressable style={styles.quickLink} onPress={() => navigation.navigate('Weight')}>
+            <Ionicons name="barbell-outline" size={20} color={colors.primary} />
+            <Text style={styles.quickLinkText}>Weight</Text>
+          </Pressable>
           <Pressable style={styles.quickLink} onPress={() => navigation.navigate('Profile')}>
             <Ionicons name="person-outline" size={20} color={colors.primary} />
-            <Text style={styles.quickLinkText}>My Profile</Text>
+            <Text style={styles.quickLinkText}>Profile</Text>
           </Pressable>
           <Pressable style={styles.quickLink} onPress={() => navigation.navigate('Settings')}>
             <Ionicons name="settings-outline" size={20} color={colors.primary} />
