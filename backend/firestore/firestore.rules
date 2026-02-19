@@ -8,27 +8,40 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    // Users can read/write only their own data
-    match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+    // admins/{uid} — presence of a doc grants admin privileges
+    // Managed via Firebase Console only (no client writes allowed)
+    match /admins/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
     }
 
-    // User subcollections follow the same ownership rule.
-    // Covers: workoutLogs, logs (daily activity logs), streak (current streak doc).
-    match /users/{userId}/{subcollection=**} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
-    }
-
-    // Workouts are globally readable by authenticated users (admin-write only)
+    // Workouts — readable by all authenticated users, writable by admins only
     match /workouts/{workoutId} {
       allow read: if request.auth != null;
-      allow write: if false;
+      allow write: if request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
     }
 
-    // Meals are globally readable by authenticated users (admin-write only)
+    // Meals — readable by all authenticated users, writable by admins only
     match /meals/{mealId} {
       allow read: if request.auth != null;
-      allow write: if false;
+      allow write: if request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Users — owner can read/write own doc; admins can read all user docs
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // User subcollections — owner-only read/write; admins can read
+    // Covers: workoutLogs, logs (daily activity logs), streak, water, weightLogs
+    match /users/{userId}/{subcollection=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
     }
   }
 }
