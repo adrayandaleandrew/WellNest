@@ -63,6 +63,7 @@ export default function WorkoutsPage() {
           <p className="text-sm text-gray-500 mt-0.5">Create and manage workout content</p>
         </div>
         <button
+          data-testid="add-workout-button"
           onClick={() => setModalWorkout(undefined)}
           className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md transition-colors duration-150 cursor-pointer"
         >
@@ -105,8 +106,8 @@ export default function WorkoutsPage() {
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {workouts.map((w) => (
-                  <tr key={w.id} className="hover:bg-gray-50 transition-colors duration-100">
-                    <td className="px-4 py-3 font-medium text-gray-900">{w.name}</td>
+                  <tr key={w.id} data-testid="workout-row" className="hover:bg-gray-50 transition-colors duration-100">
+                    <td data-testid="workout-name" className="px-4 py-3 font-medium text-gray-900">{w.name}</td>
                     <td className="px-4 py-3">
                       <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${difficultyColors[w.difficulty]}`}>
                         {w.difficulty}
@@ -122,6 +123,7 @@ export default function WorkoutsPage() {
                         Edit
                       </button>
                       <button
+                        data-testid="delete-workout-button"
                         onClick={() => handleDelete(w)}
                         className="text-red-600 hover:text-red-700 font-medium cursor-pointer transition-colors duration-150"
                       >
