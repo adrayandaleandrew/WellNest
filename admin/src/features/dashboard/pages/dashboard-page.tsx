@@ -78,22 +78,36 @@ export default function DashboardPage() {
   useEffect(() => {
     async function loadStats() {
       try {
-        // collectionGroup('workoutLogs') sums logs across ALL user subcollections
-        const [usersSnap, workoutsSnap, mealsSnap, logsSnap] = await Promise.all([
+        // Use allSettled so a single failing query (e.g. users or workoutLogs blocked
+        // by old security rules) doesn't wipe out the counts we CAN read.
+        // collectionGroup('workoutLogs') requires the new admin rules to be deployed.
+        const [usersResult, workoutsResult, mealsResult, logsResult] = await Promise.allSettled([
           getDocs(collection(db, 'users')),
           getDocs(collection(db, 'workouts')),
           getDocs(collection(db, 'meals')),
           getDocs(collectionGroup(db, 'workoutLogs')),
         ]);
 
+        const get = (r: PromiseSettledResult<{ size: number }>) =>
+          r.status === 'fulfilled' ? r.value.size : 0;
+
+        const anyFailed = [usersResult, workoutsResult, mealsResult, logsResult].some(
+          (r) => r.status === 'rejected'
+        );
+
         setStats({
-          totalUsers: usersSnap.size,
-          totalWorkouts: workoutsSnap.size,
-          totalMeals: mealsSnap.size,
-          totalWorkoutLogs: logsSnap.size,
+          totalUsers: get(usersResult),
+          totalWorkouts: get(workoutsResult),
+          totalMeals: get(mealsResult),
+          totalWorkoutLogs: get(logsResult),
         });
+
+        // Warn if some queries were blocked (likely old security rules not yet deployed)
+        if (anyFailed) {
+          setError('Some stats are unavailable — deploy the updated Firestore security rules to see full analytics.');
+        }
       } catch {
-        setError('Failed to load analytics. Check that your UID is in the admins collection.');
+        setError('Failed to load analytics.');
       } finally {
         setIsLoading(false);
       }
