@@ -327,10 +327,10 @@ Central daily hub.
 
 ## Tasks
 
-- [ ] Workout card
-- [ ] Meal card
-- [ ] Streak display
-- [ ] Water tracker
+- [x] Workout card
+- [x] Meal card
+- [x] Streak display
+- [x] Water tracker
 
 ---
 
