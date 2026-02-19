@@ -379,10 +379,10 @@ Content management.
 
 ## Tasks
 
-- [ ] Workout CRUD
-- [ ] Meals CRUD
-- [ ] User list
-- [ ] Basic analytics
+- [x] Workout CRUD
+- [x] Meals CRUD
+- [x] User list
+- [x] Basic analytics
 
 ---
 
