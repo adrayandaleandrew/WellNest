@@ -85,15 +85,13 @@ export default function DashboardPage() {
           getDocs(collection(db, 'users')),
           getDocs(collection(db, 'workouts')),
           getDocs(collection(db, 'meals')),
+          // collectionGroup requires a Firestore collection group index — silently
+          // defaults to 0 if the index hasn't been deployed yet
           getDocs(collectionGroup(db, 'workoutLogs')),
         ]);
 
         const get = (r: PromiseSettledResult<{ size: number }>) =>
           r.status === 'fulfilled' ? r.value.size : 0;
-
-        const anyFailed = [usersResult, workoutsResult, mealsResult, logsResult].some(
-          (r) => r.status === 'rejected'
-        );
 
         setStats({
           totalUsers: get(usersResult),
@@ -102,9 +100,13 @@ export default function DashboardPage() {
           totalWorkoutLogs: get(logsResult),
         });
 
-        // Warn if some queries were blocked (likely old security rules not yet deployed)
-        if (anyFailed) {
-          setError('Some stats are unavailable — deploy the updated Firestore security rules to see full analytics.');
+        // Only warn if the core queries (users/workouts/meals) are blocked —
+        // workoutLogs can silently fail until the collection group index is deployed
+        const coresFailed = [usersResult, workoutsResult, mealsResult].some(
+          (r) => r.status === 'rejected'
+        );
+        if (coresFailed) {
+          setError('Some stats are unavailable — check that your UID is in the admins collection and the security rules are deployed.');
         }
       } catch {
         setError('Failed to load analytics.');
