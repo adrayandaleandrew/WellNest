@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { collection, getDocs, collectionGroup } from 'firebase/firestore';
 import { db } from '../../../shared/services/firebase';
+import SeedPanel from '../../setup/components/seed-panel';
 
 type Stats = {
   totalUsers: number;
@@ -114,6 +115,14 @@ export default function DashboardPage() {
         <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-md px-4 py-3 mb-6">
           {error}
         </div>
+      )}
+
+      {/* Seed panel — only visible when workouts and meals are both empty */}
+      {!isLoading && (
+        <SeedPanel
+          totalWorkouts={stats?.totalWorkouts ?? 0}
+          totalMeals={stats?.totalMeals ?? 0}
+        />
       )}
 
       {/* Stat cards */}
