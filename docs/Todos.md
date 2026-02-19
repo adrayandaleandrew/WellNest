@@ -200,13 +200,13 @@ Collect user data for personalization.
 
 ## Tasks
 
-- [ ] Goal selection
-- [ ] Basic info form
-- [ ] Health flags
-- [ ] Activity level
-- [ ] Save to Firestore
-- [ ] Profile screen
-- [ ] Edit profile
+- [x] Goal selection
+- [x] Basic info form
+- [x] Health flags
+- [x] Activity level
+- [x] Save to Firestore
+- [x] Profile screen
+- [x] Edit profile
 
 ---
 
@@ -232,24 +232,24 @@ Enable users to complete workouts.
 
 ### Data
 
-- [ ] Create workouts collection
-- [ ] Seed workouts
+- [x] Create workouts collection
+- [x] Seed workouts
 
 ---
 
 ### UI
 
-- [ ] Workout list
-- [ ] Workout detail
-- [ ] Workout mode screen
-- [ ] Timer/rest logic
-- [ ] Completion screen
+- [x] Workout list
+- [x] Workout detail
+- [x] Workout mode screen
+- [x] Timer/rest logic
+- [x] Completion screen
 
 ---
 
 ### Logic
 
-- [ ] Save workout logs
+- [x] Save workout logs
 
 ---
 
@@ -273,11 +273,11 @@ Track user consistency.
 
 ## Tasks
 
-- [ ] Logs collection
-- [ ] Streaks collection
-- [ ] Daily log logic
-- [ ] Streak calculation
-- [ ] Home display
+- [x] Logs collection
+- [x] Streaks collection
+- [x] Daily log logic
+- [x] Streak calculation
+- [x] Home display
 
 ---
 

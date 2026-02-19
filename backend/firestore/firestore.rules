@@ -13,7 +13,8 @@ service cloud.firestore {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
 
-    // User subcollections follow the same ownership rule
+    // User subcollections follow the same ownership rule.
+    // Covers: workoutLogs, logs (daily activity logs), streak (current streak doc).
     match /users/{userId}/{subcollection=**} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
