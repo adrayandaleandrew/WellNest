@@ -300,11 +300,11 @@ Provide diet guidance.
 
 ## Tasks
 
-- [ ] Meals collection
-- [ ] Seed meals
-- [ ] Meals list UI
-- [ ] Meal detail UI
-- [ ] Filters
+- [x] Meals collection
+- [x] Seed meals
+- [x] Meals list UI
+- [x] Meal detail UI
+- [x] Filters
 
 ---
 

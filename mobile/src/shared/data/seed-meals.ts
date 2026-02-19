@@ -1,0 +1,188 @@
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../services/firebase';
+import type { Meal } from '../types/meal';
+
+type SeedMeal = Omit<Meal, 'id'> & { id: string };
+
+const SEED_MEALS: SeedMeal[] = [
+  {
+    id: 'oatmeal-with-berries',
+    name: 'Oatmeal with Berries',
+    description: 'A warm and filling breakfast bowl topped with fresh mixed berries and a drizzle of honey. High in fiber and antioxidants.',
+    category: 'breakfast',
+    dietaryTags: ['vegetarian', 'vegan'],
+    prepTimeMinutes: 10,
+    servings: 1,
+    nutrition: { calories: 320, proteinG: 10, carbsG: 58, fatG: 6 },
+    ingredients: [
+      { name: 'Rolled oats', amount: '1 cup' },
+      { name: 'Water or plant milk', amount: '2 cups' },
+      { name: 'Mixed berries (fresh or frozen)', amount: '½ cup' },
+      { name: 'Honey or maple syrup', amount: '1 tbsp' },
+      { name: 'Chia seeds', amount: '1 tsp' },
+      { name: 'Pinch of salt', amount: '⅛ tsp' },
+    ],
+    instructions: [
+      'Bring water or plant milk to a boil in a small saucepan.',
+      'Add rolled oats and a pinch of salt. Reduce heat to medium.',
+      'Cook for 5 minutes, stirring occasionally, until oats are creamy.',
+      'Transfer to a bowl and top with mixed berries.',
+      'Drizzle with honey or maple syrup and sprinkle chia seeds.',
+      'Serve immediately.',
+    ],
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'scrambled-eggs',
+    name: 'Scrambled Eggs',
+    description: 'Soft and fluffy scrambled eggs — a quick, protein-rich breakfast that keeps you full and energized.',
+    category: 'breakfast',
+    dietaryTags: ['high_protein', 'gluten_free'],
+    prepTimeMinutes: 8,
+    servings: 1,
+    nutrition: { calories: 220, proteinG: 18, carbsG: 2, fatG: 15 },
+    ingredients: [
+      { name: 'Large eggs', amount: '3' },
+      { name: 'Whole milk', amount: '2 tbsp' },
+      { name: 'Butter', amount: '1 tsp' },
+      { name: 'Salt', amount: '¼ tsp' },
+      { name: 'Black pepper', amount: '⅛ tsp' },
+      { name: 'Fresh chives (optional)', amount: '1 tbsp' },
+    ],
+    instructions: [
+      'Crack eggs into a bowl, add milk, salt, and pepper.',
+      'Whisk together until well combined and slightly frothy.',
+      'Melt butter in a non-stick pan over low-medium heat.',
+      'Pour in the egg mixture. Let it sit for 20 seconds.',
+      'Gently push the eggs from the edges to the center using a spatula.',
+      'Remove from heat just before fully set — residual heat will finish cooking.',
+      'Garnish with chives and serve immediately.',
+    ],
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'grilled-chicken-salad',
+    name: 'Grilled Chicken Salad',
+    description: 'A light yet satisfying lunch bowl with grilled chicken, crisp greens, and a lemon-olive oil dressing.',
+    category: 'lunch',
+    dietaryTags: ['high_protein', 'gluten_free', 'dairy_free'],
+    prepTimeMinutes: 20,
+    servings: 1,
+    nutrition: { calories: 380, proteinG: 42, carbsG: 12, fatG: 18 },
+    ingredients: [
+      { name: 'Chicken breast', amount: '150g' },
+      { name: 'Mixed salad greens', amount: '2 cups' },
+      { name: 'Cherry tomatoes', amount: '½ cup' },
+      { name: 'Cucumber', amount: '½, sliced' },
+      { name: 'Red onion', amount: '¼, thinly sliced' },
+      { name: 'Olive oil', amount: '2 tbsp' },
+      { name: 'Lemon juice', amount: '1 tbsp' },
+      { name: 'Salt & pepper', amount: 'to taste' },
+    ],
+    instructions: [
+      'Season chicken breast with salt, pepper, and 1 tbsp olive oil.',
+      'Grill or pan-sear over medium-high heat for 6–7 minutes per side until cooked through.',
+      'Let the chicken rest for 3 minutes, then slice.',
+      'Arrange salad greens, tomatoes, cucumber, and red onion in a bowl.',
+      'Whisk remaining olive oil with lemon juice and a pinch of salt.',
+      'Top salad with sliced chicken and drizzle with dressing.',
+      'Serve immediately.',
+    ],
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'veggie-stir-fry',
+    name: 'Veggie Stir Fry',
+    description: 'A colorful, low-carb stir fry loaded with crisp vegetables and savory sauce. Ready in under 15 minutes.',
+    category: 'lunch',
+    dietaryTags: ['vegetarian', 'vegan', 'low_carb'],
+    prepTimeMinutes: 15,
+    servings: 2,
+    nutrition: { calories: 180, proteinG: 6, carbsG: 18, fatG: 8 },
+    ingredients: [
+      { name: 'Broccoli florets', amount: '1 cup' },
+      { name: 'Bell peppers (mixed colors)', amount: '1 cup, sliced' },
+      { name: 'Snap peas', amount: '½ cup' },
+      { name: 'Carrots', amount: '1, julienned' },
+      { name: 'Garlic', amount: '2 cloves, minced' },
+      { name: 'Soy sauce', amount: '2 tbsp' },
+      { name: 'Sesame oil', amount: '1 tbsp' },
+      { name: 'Fresh ginger', amount: '1 tsp, grated' },
+    ],
+    instructions: [
+      'Heat sesame oil in a wok or large pan over high heat.',
+      'Add garlic and ginger, stir for 30 seconds until fragrant.',
+      'Add carrots and broccoli. Stir fry for 2 minutes.',
+      'Add bell peppers and snap peas. Continue stir frying for 2–3 minutes.',
+      'Pour in soy sauce and toss everything together.',
+      'Cook for 1 more minute until vegetables are tender but still crisp.',
+      'Serve immediately over cauliflower rice or on its own.',
+    ],
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'salmon-roasted-vegetables',
+    name: 'Salmon with Roasted Vegetables',
+    description: 'Oven-baked salmon fillet served alongside golden roasted vegetables. A nutritious, omega-3 rich dinner.',
+    category: 'dinner',
+    dietaryTags: ['high_protein', 'gluten_free', 'dairy_free'],
+    prepTimeMinutes: 35,
+    servings: 2,
+    nutrition: { calories: 480, proteinG: 46, carbsG: 22, fatG: 22 },
+    ingredients: [
+      { name: 'Salmon fillets', amount: '2 × 150g' },
+      { name: 'Zucchini', amount: '1, sliced' },
+      { name: 'Bell pepper', amount: '1, chopped' },
+      { name: 'Cherry tomatoes', amount: '1 cup' },
+      { name: 'Olive oil', amount: '3 tbsp' },
+      { name: 'Garlic powder', amount: '½ tsp' },
+      { name: 'Dried oregano', amount: '½ tsp' },
+      { name: 'Salt & pepper', amount: 'to taste' },
+      { name: 'Lemon wedges', amount: 'for serving' },
+    ],
+    instructions: [
+      'Preheat oven to 200°C (400°F). Line a baking sheet with parchment paper.',
+      'Toss zucchini, bell pepper, and tomatoes with 2 tbsp olive oil, garlic powder, oregano, salt, and pepper.',
+      'Spread vegetables on one half of the baking sheet.',
+      'Place salmon fillets on the other half. Drizzle with remaining olive oil and season with salt and pepper.',
+      'Roast for 18–20 minutes until salmon flakes easily and vegetables are golden.',
+      'Serve immediately with lemon wedges.',
+    ],
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'greek-yogurt-parfait',
+    name: 'Greek Yogurt Parfait',
+    description: 'Creamy Greek yogurt layered with granola and fresh fruit. A quick, protein-packed snack or light breakfast.',
+    category: 'snack',
+    dietaryTags: ['high_protein', 'vegetarian'],
+    prepTimeMinutes: 5,
+    servings: 1,
+    nutrition: { calories: 280, proteinG: 20, carbsG: 34, fatG: 6 },
+    ingredients: [
+      { name: 'Plain Greek yogurt', amount: '200g' },
+      { name: 'Granola', amount: '¼ cup' },
+      { name: 'Fresh strawberries', amount: '½ cup, sliced' },
+      { name: 'Blueberries', amount: '¼ cup' },
+      { name: 'Honey', amount: '1 tsp' },
+    ],
+    instructions: [
+      'Spoon half the Greek yogurt into a glass or bowl.',
+      'Add a layer of granola.',
+      'Top with the remaining yogurt.',
+      'Arrange sliced strawberries and blueberries on top.',
+      'Drizzle with honey and serve immediately.',
+    ],
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+];
+
+export { SEED_MEALS };
+
+export async function seedMeals(): Promise<void> {
+  const promises = SEED_MEALS.map((meal) => {
+    const { id, ...data } = meal;
+    return setDoc(doc(db, 'meals', id), data);
+  });
+  await Promise.all(promises);
+}
