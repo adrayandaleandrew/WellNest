@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import type { WeightEntry } from '../../../shared/types/weight';
+import EmptyState from '../../../shared/components/empty-state';
 import { colors, spacing, typography, borderRadius } from '../../../shared/constants/theme';
 
 const CHART_HEIGHT = 140;
@@ -14,9 +15,11 @@ export default function WeightChart({ entries }: Props) {
 
   if (visible.length === 0) {
     return (
-      <View style={styles.empty}>
-        <Text style={styles.emptyText}>Log your first weight to see the chart.</Text>
-      </View>
+      <EmptyState
+        icon="trending-up-outline"
+        title="No data yet"
+        message="Log your first weight to see the chart."
+      />
     );
   }
 
@@ -110,18 +113,5 @@ const styles = StyleSheet.create({
     fontSize: 9,
     color: colors.text.secondary,
     marginTop: 4,
-  },
-  empty: {
-    backgroundColor: colors.surface,
-    borderRadius: borderRadius.lg,
-    padding: spacing.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    alignItems: 'center',
-  },
-  emptyText: {
-    fontSize: typography.fontSize.sm,
-    color: colors.text.secondary,
-    textAlign: 'center',
   },
 });

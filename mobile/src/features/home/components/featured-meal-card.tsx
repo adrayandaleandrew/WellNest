@@ -10,7 +10,12 @@ type Props = {
 
 export default function FeaturedMealCard({ meal, onPress }: Props) {
   return (
-    <Pressable style={styles.card} onPress={onPress}>
+    <Pressable
+      style={styles.card}
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={`${meal.name}, ${meal.prepTimeMinutes} minutes prep, ${meal.nutrition.calories} calories`}
+    >
       <Text style={styles.name}>{meal.name}</Text>
       <Text style={styles.description} numberOfLines={2}>
         {meal.description}

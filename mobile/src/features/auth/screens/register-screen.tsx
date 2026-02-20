@@ -17,6 +17,8 @@ import {
   validatePassword,
   validateConfirmPassword,
 } from '../../../shared/utils/validation';
+import PrimaryButton from '../../../shared/components/primary-button';
+import ErrorState from '../../../shared/components/error-state';
 import { colors, spacing, typography, borderRadius } from '../../../shared/constants/theme';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Register'>;
@@ -69,7 +71,11 @@ export default function RegisterScreen({ navigation }: Props) {
         <Text style={styles.title}>Create Account</Text>
         <Text style={styles.subtitle}>Join WellNest today</Text>
 
-        {errors.general && <Text style={styles.errorBanner}>{errors.general}</Text>}
+        {errors.general ? (
+          <View style={styles.errorBannerWrapper}>
+            <ErrorState compact message={errors.general} />
+          </View>
+        ) : null}
 
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Email</Text>
@@ -82,8 +88,9 @@ export default function RegisterScreen({ navigation }: Props) {
             autoCapitalize="none"
             keyboardType="email-address"
             autoComplete="email"
+            accessibilityLabel="Email address"
           />
-          {errors.email && <Text style={styles.fieldError}>{errors.email}</Text>}
+          {errors.email ? <Text style={styles.fieldError}>{errors.email}</Text> : null}
         </View>
 
         <View style={styles.inputGroup}>
@@ -96,8 +103,10 @@ export default function RegisterScreen({ navigation }: Props) {
             onChangeText={setPassword}
             secureTextEntry
             autoComplete="new-password"
+            accessibilityLabel="Password"
+            accessibilityHint="Minimum 8 characters with uppercase, lowercase, and number"
           />
-          {errors.password && <Text style={styles.fieldError}>{errors.password}</Text>}
+          {errors.password ? <Text style={styles.fieldError}>{errors.password}</Text> : null}
         </View>
 
         <View style={styles.inputGroup}>
@@ -110,23 +119,26 @@ export default function RegisterScreen({ navigation }: Props) {
             onChangeText={setConfirmPassword}
             secureTextEntry
             autoComplete="new-password"
+            accessibilityLabel="Confirm password"
           />
-          {errors.confirmPassword && (
+          {errors.confirmPassword ? (
             <Text style={styles.fieldError}>{errors.confirmPassword}</Text>
-          )}
+          ) : null}
         </View>
 
-        <Pressable
-          style={[styles.button, isSubmitting && styles.buttonDisabled]}
+        <PrimaryButton
+          title="Create Account"
           onPress={handleRegister}
-          disabled={isSubmitting}
-        >
-          <Text style={styles.buttonText}>
-            {isSubmitting ? 'Creating account...' : 'Create Account'}
-          </Text>
-        </Pressable>
+          isLoading={isSubmitting}
+          accessibilityLabel="Create Account"
+        />
 
-        <Pressable onPress={() => navigation.navigate('Login')} style={styles.linkContainer}>
+        <Pressable
+          onPress={() => navigation.navigate('Login')}
+          style={styles.linkContainer}
+          accessibilityRole="link"
+          accessibilityLabel="Already have an account? Log in"
+        >
           <Text style={styles.linkText}>
             Already have an account? <Text style={styles.linkBold}>Log in</Text>
           </Text>
@@ -159,14 +171,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: spacing.xl,
   },
-  errorBanner: {
-    backgroundColor: '#FFEBEE',
-    color: colors.error,
-    fontSize: typography.fontSize.sm,
-    padding: spacing.md,
-    borderRadius: borderRadius.md,
+  errorBannerWrapper: {
     marginBottom: spacing.md,
-    textAlign: 'center',
   },
   inputGroup: {
     marginBottom: spacing.md,
@@ -194,24 +200,11 @@ const styles = StyleSheet.create({
     fontSize: typography.fontSize.xs,
     marginTop: spacing.xs,
   },
-  button: {
-    backgroundColor: colors.primary,
-    paddingVertical: spacing.md,
-    borderRadius: borderRadius.md,
-    alignItems: 'center',
-    marginTop: spacing.sm,
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    color: colors.text.inverse,
-    fontSize: typography.fontSize.md,
-    fontWeight: typography.fontWeight.semibold,
-  },
   linkContainer: {
     marginTop: spacing.lg,
     alignItems: 'center',
+    minHeight: 44,
+    justifyContent: 'center',
   },
   linkText: {
     fontSize: typography.fontSize.sm,

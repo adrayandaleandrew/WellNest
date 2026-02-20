@@ -10,7 +10,12 @@ type Props = {
 
 export default function WorkoutCard({ workout, onPress }: Props) {
   return (
-    <Pressable style={styles.card} onPress={onPress}>
+    <Pressable
+      style={styles.card}
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={`${workout.name}, ${formatDifficulty(workout.difficulty)}, ${workout.durationMinutes} minutes`}
+    >
       <Text style={styles.name}>{workout.name}</Text>
       <Text style={styles.description} numberOfLines={2}>
         {workout.description}

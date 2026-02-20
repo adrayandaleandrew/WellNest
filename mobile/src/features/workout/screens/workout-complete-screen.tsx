@@ -8,6 +8,8 @@ import { useStreak } from '../../../shared/contexts/streak-context';
 import { saveWorkoutLog } from '../../../shared/services/workout-service';
 import { formatDuration } from '../../../shared/utils/workout-utils';
 import type { WorkoutLog } from '../../../shared/types/workout';
+import ErrorState from '../../../shared/components/error-state';
+import { FadeInView } from '../../../shared/components/animated-views';
 import { colors, spacing, typography, borderRadius } from '../../../shared/constants/theme';
 
 type Props = NativeStackScreenProps<MainStackParamList, 'WorkoutComplete'>;
@@ -44,29 +46,41 @@ export default function WorkoutCompleteScreen({ route, navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.body}>
-        <Text style={styles.emoji}>&#127881;</Text>
-        <Text style={styles.title}>Workout Complete!</Text>
-        <Text style={styles.workoutName}>{summary.workoutName}</Text>
+      <FadeInView duration={500} style={styles.fadeWrapper}>
+        <View style={styles.body}>
+          <Text style={styles.emoji}>&#127881;</Text>
+          <Text style={styles.title}>Workout Complete!</Text>
+          <Text style={styles.workoutName}>{summary.workoutName}</Text>
 
-        <View style={styles.statsRow}>
-          <View style={styles.statCard}>
-            <Text style={styles.statValue}>
-              {summary.exercisesCompleted}/{summary.exercisesTotal}
-            </Text>
-            <Text style={styles.statLabel}>Exercises</Text>
+          <View
+            style={styles.statsRow}
+            accessibilityLiveRegion="polite"
+          >
+            <View style={styles.statCard}>
+              <Text style={styles.statValue}>
+                {summary.exercisesCompleted}/{summary.exercisesTotal}
+              </Text>
+              <Text style={styles.statLabel}>Exercises</Text>
+            </View>
+            <View style={styles.statCard}>
+              <Text style={styles.statValue}>{formatDuration(summary.durationSeconds)}</Text>
+              <Text style={styles.statLabel}>Duration</Text>
+            </View>
           </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statValue}>{formatDuration(summary.durationSeconds)}</Text>
-            <Text style={styles.statLabel}>Duration</Text>
-          </View>
+
+          {error ? <ErrorState compact message={error} /> : null}
         </View>
-
-        {error && <Text style={styles.errorText}>{error}</Text>}
-      </View>
+      </FadeInView>
 
       <View style={styles.footer}>
-        <Pressable style={styles.doneButton} onPress={handleDone} disabled={isSaving}>
+        <Pressable
+          style={[styles.doneButton, isSaving && styles.doneButtonDisabled]}
+          onPress={handleDone}
+          disabled={isSaving}
+          accessibilityRole="button"
+          accessibilityLabel="Done"
+          accessibilityState={{ disabled: isSaving, busy: isSaving }}
+        >
           {isSaving ? (
             <ActivityIndicator color={colors.text.inverse} />
           ) : (
@@ -127,12 +141,6 @@ const styles = StyleSheet.create({
     fontSize: typography.fontSize.sm,
     color: colors.text.secondary,
   },
-  errorText: {
-    fontSize: typography.fontSize.sm,
-    color: colors.error,
-    marginTop: spacing.md,
-    textAlign: 'center',
-  },
   footer: {
     padding: spacing.md,
     borderTopWidth: 1,
@@ -144,10 +152,18 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
     borderRadius: borderRadius.md,
     alignItems: 'center',
+    minHeight: 44,
+    justifyContent: 'center',
+  },
+  doneButtonDisabled: {
+    opacity: 0.6,
   },
   doneButtonText: {
     color: colors.text.inverse,
     fontSize: typography.fontSize.lg,
     fontWeight: typography.fontWeight.bold,
+  },
+  fadeWrapper: {
+    flex: 1,
   },
 });

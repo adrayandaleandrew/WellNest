@@ -14,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useWeight } from '../hooks/use-weight';
 import WeightChart from '../components/weight-chart';
 import WeightHistoryItem from '../components/weight-history-item';
+import ErrorState from '../../../shared/components/error-state';
 import { colors, spacing, typography, borderRadius } from '../../../shared/constants/theme';
 
 export default function WeightScreen() {
@@ -72,6 +73,8 @@ export default function WeightScreen() {
                 }}
                 returnKeyType="done"
                 onSubmitEditing={handleSubmit}
+                accessibilityLabel="Weight in kilograms"
+                accessibilityHint="Enter your current weight"
               />
               <Text style={styles.unit}>kg</Text>
             </View>
@@ -80,6 +83,9 @@ export default function WeightScreen() {
               style={[styles.submitButton, isSaving && styles.submitButtonDisabled]}
               onPress={handleSubmit}
               disabled={isSaving}
+              accessibilityRole="button"
+              accessibilityLabel="Save weight entry"
+              accessibilityState={{ disabled: isSaving, busy: isSaving }}
             >
               {isSaving ? (
                 <ActivityIndicator color={colors.text.inverse} size="small" />
@@ -93,7 +99,7 @@ export default function WeightScreen() {
           {isLoading ? (
             <ActivityIndicator color={colors.primary} style={styles.loader} />
           ) : error ? (
-            <Text style={styles.globalError}>{error}</Text>
+            <ErrorState compact message={error} />
           ) : (
             <>
               <Text style={styles.sectionTitle}>Progress (last 7 entries)</Text>

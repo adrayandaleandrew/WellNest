@@ -13,6 +13,8 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { AuthStackParamList } from '../navigation/auth-navigator';
 import { useAuth } from '../../../shared/contexts/auth-context';
 import { validateEmail, validatePassword } from '../../../shared/utils/validation';
+import PrimaryButton from '../../../shared/components/primary-button';
+import ErrorState from '../../../shared/components/error-state';
 import { colors, spacing, typography, borderRadius } from '../../../shared/constants/theme';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
@@ -54,7 +56,11 @@ export default function LoginScreen({ navigation }: Props) {
         <Text style={styles.title}>WellNest</Text>
         <Text style={styles.subtitle}>Welcome back</Text>
 
-        {errors.general && <Text style={styles.errorBanner}>{errors.general}</Text>}
+        {errors.general ? (
+          <View style={styles.errorBannerWrapper}>
+            <ErrorState compact message={errors.general} />
+          </View>
+        ) : null}
 
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Email</Text>
@@ -67,8 +73,9 @@ export default function LoginScreen({ navigation }: Props) {
             autoCapitalize="none"
             keyboardType="email-address"
             autoComplete="email"
+            accessibilityLabel="Email address"
           />
-          {errors.email && <Text style={styles.fieldError}>{errors.email}</Text>}
+          {errors.email ? <Text style={styles.fieldError}>{errors.email}</Text> : null}
         </View>
 
         <View style={styles.inputGroup}>
@@ -81,19 +88,24 @@ export default function LoginScreen({ navigation }: Props) {
             onChangeText={setPassword}
             secureTextEntry
             autoComplete="password"
+            accessibilityLabel="Password"
           />
-          {errors.password && <Text style={styles.fieldError}>{errors.password}</Text>}
+          {errors.password ? <Text style={styles.fieldError}>{errors.password}</Text> : null}
         </View>
 
-        <Pressable
-          style={[styles.button, isSubmitting && styles.buttonDisabled]}
+        <PrimaryButton
+          title="Log In"
           onPress={handleLogin}
-          disabled={isSubmitting}
-        >
-          <Text style={styles.buttonText}>{isSubmitting ? 'Logging in...' : 'Log In'}</Text>
-        </Pressable>
+          isLoading={isSubmitting}
+          accessibilityLabel="Log In"
+        />
 
-        <Pressable onPress={() => navigation.navigate('Register')} style={styles.linkContainer}>
+        <Pressable
+          onPress={() => navigation.navigate('Register')}
+          style={styles.linkContainer}
+          accessibilityRole="link"
+          accessibilityLabel="Don't have an account? Sign up"
+        >
           <Text style={styles.linkText}>
             Don't have an account? <Text style={styles.linkBold}>Sign up</Text>
           </Text>
@@ -126,14 +138,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: spacing.xl,
   },
-  errorBanner: {
-    backgroundColor: '#FFEBEE',
-    color: colors.error,
-    fontSize: typography.fontSize.sm,
-    padding: spacing.md,
-    borderRadius: borderRadius.md,
+  errorBannerWrapper: {
     marginBottom: spacing.md,
-    textAlign: 'center',
   },
   inputGroup: {
     marginBottom: spacing.md,
@@ -161,24 +167,11 @@ const styles = StyleSheet.create({
     fontSize: typography.fontSize.xs,
     marginTop: spacing.xs,
   },
-  button: {
-    backgroundColor: colors.primary,
-    paddingVertical: spacing.md,
-    borderRadius: borderRadius.md,
-    alignItems: 'center',
-    marginTop: spacing.sm,
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    color: colors.text.inverse,
-    fontSize: typography.fontSize.md,
-    fontWeight: typography.fontWeight.semibold,
-  },
   linkContainer: {
     marginTop: spacing.lg,
     alignItems: 'center',
+    minHeight: 44,
+    justifyContent: 'center',
   },
   linkText: {
     fontSize: typography.fontSize.sm,

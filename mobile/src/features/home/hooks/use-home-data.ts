@@ -8,13 +8,17 @@ export function useHomeData() {
   const [featuredWorkout, setFeaturedWorkout] = useState<Workout | null>(null);
   const [featuredMeal, setFeaturedMeal] = useState<Meal | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
+    setError(null);
     try {
       const [workouts, meals] = await Promise.all([getWorkouts(), getMeals()]);
       setFeaturedWorkout(workouts[0] ?? null);
       setFeaturedMeal(meals[0] ?? null);
+    } catch {
+      setError('Failed to load home data. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -24,5 +28,5 @@ export function useHomeData() {
     fetchData();
   }, [fetchData]);
 
-  return { featuredWorkout, featuredMeal, isLoading };
+  return { featuredWorkout, featuredMeal, isLoading, error, refetch: fetchData };
 }
