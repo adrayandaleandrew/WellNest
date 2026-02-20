@@ -22,10 +22,17 @@ export default function SettingsScreen({ navigation }: Props) {
       <Pressable
         style={styles.menuItem}
         onPress={() => navigation.navigate('Profile')}
+        accessibilityRole="button"
+        accessibilityLabel="My Profile"
       >
         <Text style={styles.menuItemText}>My Profile</Text>
       </Pressable>
-      <Pressable style={styles.logoutButton} onPress={handleLogout}>
+      <Pressable
+        style={styles.logoutButton}
+        onPress={handleLogout}
+        accessibilityRole="button"
+        accessibilityLabel="Log Out"
+      >
         <Text style={styles.logoutText}>Log Out</Text>
       </Pressable>
     </View>

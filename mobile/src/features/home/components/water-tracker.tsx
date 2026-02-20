@@ -38,6 +38,7 @@ export default function WaterTracker({ glasses, maxGlasses, onAdd, onRemove }: P
           style={[styles.controlButton, glasses === 0 && styles.controlButtonDisabled]}
           onPress={onRemove}
           disabled={glasses === 0}
+          accessibilityRole="button"
           accessibilityLabel="Remove one glass"
         >
           <Ionicons
@@ -50,6 +51,7 @@ export default function WaterTracker({ glasses, maxGlasses, onAdd, onRemove }: P
           style={[styles.controlButton, glasses === maxGlasses && styles.controlButtonDisabled]}
           onPress={onAdd}
           disabled={glasses === maxGlasses}
+          accessibilityRole="button"
           accessibilityLabel="Add one glass"
         >
           <Ionicons

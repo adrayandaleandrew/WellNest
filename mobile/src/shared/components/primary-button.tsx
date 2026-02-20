@@ -6,9 +6,10 @@ type Props = {
   onPress: () => void;
   isLoading?: boolean;
   disabled?: boolean;
+  accessibilityLabel?: string;
 };
 
-export default function PrimaryButton({ title, onPress, isLoading, disabled }: Props) {
+export default function PrimaryButton({ title, onPress, isLoading, disabled, accessibilityLabel }: Props) {
   const isDisabled = disabled || isLoading;
 
   return (
@@ -16,6 +17,9 @@ export default function PrimaryButton({ title, onPress, isLoading, disabled }: P
       style={[styles.button, isDisabled && styles.buttonDisabled]}
       onPress={onPress}
       disabled={isDisabled}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel ?? title}
+      accessibilityState={{ disabled: isDisabled, busy: isLoading }}
     >
       {isLoading ? (
         <ActivityIndicator color={colors.text.inverse} />

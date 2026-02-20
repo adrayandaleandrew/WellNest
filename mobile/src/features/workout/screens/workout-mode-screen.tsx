@@ -4,6 +4,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { MainStackParamList } from '../../../app/navigation/root-navigator';
 import { useWorkoutSession } from '../hooks/use-workout-session';
 import RestTimer from '../components/rest-timer';
+import { FadeSlideView } from '../../../shared/components/animated-views';
 import { formatDuration } from '../../../shared/utils/workout-utils';
 import { colors, spacing, typography, borderRadius } from '../../../shared/constants/theme';
 
@@ -34,7 +35,11 @@ export default function WorkoutModeScreen({ route, navigation }: Props) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <Pressable onPress={handleBack}>
+          <Pressable
+            onPress={handleBack}
+            accessibilityRole="button"
+            accessibilityLabel="Quit workout"
+          >
             <Text style={styles.quitText}>Quit</Text>
           </Pressable>
           <Text style={styles.progress}>
@@ -57,7 +62,11 @@ export default function WorkoutModeScreen({ route, navigation }: Props) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Pressable onPress={handleBack}>
+        <Pressable
+          onPress={handleBack}
+          accessibilityRole="button"
+          accessibilityLabel="Quit workout"
+        >
           <Text style={styles.quitText}>Quit</Text>
         </Pressable>
         <Text style={styles.progress}>
@@ -65,17 +74,25 @@ export default function WorkoutModeScreen({ route, navigation }: Props) {
         </Text>
       </View>
 
-      <View style={styles.body}>
-        <Text style={styles.exerciseName}>{exercise.name}</Text>
-        <Text style={styles.setInfo}>
-          Set {session.currentSet} of {exercise.sets}
-        </Text>
-        <Text style={styles.workLabel}>{workLabel}</Text>
-        <Text style={styles.description}>{exercise.description}</Text>
-      </View>
+      {/* Slides in when exercise changes — GPU-animated via transform + opacity */}
+      <FadeSlideView triggerKey={session.currentExerciseIndex} style={styles.body}>
+        <View style={styles.bodyInner}>
+          <Text style={styles.exerciseName}>{exercise.name}</Text>
+          <Text style={styles.setInfo}>
+            Set {session.currentSet} of {exercise.sets}
+          </Text>
+          <Text style={styles.workLabel}>{workLabel}</Text>
+          <Text style={styles.description}>{exercise.description}</Text>
+        </View>
+      </FadeSlideView>
 
       <View style={styles.footer}>
-        <Pressable style={styles.completeButton} onPress={session.completeSet}>
+        <Pressable
+          style={styles.completeButton}
+          onPress={session.completeSet}
+          accessibilityRole="button"
+          accessibilityLabel="Complete set"
+        >
           <Text style={styles.completeButtonText}>Complete Set</Text>
         </Pressable>
       </View>
@@ -107,6 +124,9 @@ const styles = StyleSheet.create({
     fontWeight: typography.fontWeight.medium,
   },
   body: {
+    flex: 1,
+  },
+  bodyInner: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -149,6 +169,8 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
     borderRadius: borderRadius.md,
     alignItems: 'center',
+    minHeight: 44,
+    justifyContent: 'center',
   },
   completeButtonText: {
     color: colors.text.inverse,

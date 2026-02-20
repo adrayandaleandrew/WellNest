@@ -10,6 +10,9 @@ import { useWater } from '../hooks/use-water';
 import FeaturedWorkoutCard from '../components/featured-workout-card';
 import FeaturedMealCard from '../components/featured-meal-card';
 import WaterTracker from '../components/water-tracker';
+import EmptyState from '../../../shared/components/empty-state';
+import ErrorState from '../../../shared/components/error-state';
+import { FadeInView } from '../../../shared/components/animated-views';
 import { colors, spacing, typography, borderRadius } from '../../../shared/constants/theme';
 
 type Props = NativeStackScreenProps<MainStackParamList, 'Home'>;
@@ -17,7 +20,7 @@ type Props = NativeStackScreenProps<MainStackParamList, 'Home'>;
 export default function HomeScreen({ navigation }: Props) {
   const { profile } = useProfile();
   const { streak, hasLoggedToday, isLoadingStreak } = useStreak();
-  const { featuredWorkout, featuredMeal, isLoading: isLoadingData } = useHomeData();
+  const { featuredWorkout, featuredMeal, isLoading: isLoadingData, error, refetch } = useHomeData();
   const { glasses, addGlass, removeGlass, maxGlasses } = useWater();
 
   const firstName = profile?.displayName?.split(' ')[0] ?? 'there';
@@ -26,11 +29,13 @@ export default function HomeScreen({ navigation }: Props) {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
 
-        {/* Greeting */}
-        <View style={styles.header}>
-          <Text style={styles.greeting}>Hey, {firstName} 👋</Text>
-          <Text style={styles.subtitle}>Let's keep the momentum going.</Text>
-        </View>
+        {/* Greeting — fades in on mount */}
+        <FadeInView duration={400}>
+          <View style={styles.header}>
+            <Text style={styles.greeting}>Hey, {firstName} 👋</Text>
+            <Text style={styles.subtitle}>Let's keep the momentum going.</Text>
+          </View>
+        </FadeInView>
 
         {/* Streak card */}
         <View style={styles.streakCard}>
@@ -58,11 +63,21 @@ export default function HomeScreen({ navigation }: Props) {
           )}
         </View>
 
+        {/* Error banner for home data */}
+        {error ? (
+          <ErrorState compact message={error} onRetry={refetch} />
+        ) : null}
+
         {/* Today's Workout */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Today's Workout</Text>
-            <Pressable onPress={() => navigation.navigate('WorkoutList')} hitSlop={8}>
+            <Pressable
+              onPress={() => navigation.navigate('WorkoutList')}
+              hitSlop={8}
+              accessibilityRole="button"
+              accessibilityLabel="See all workouts"
+            >
               <Text style={styles.seeAll}>See All</Text>
             </Pressable>
           </View>
@@ -74,7 +89,11 @@ export default function HomeScreen({ navigation }: Props) {
               onPress={() => navigation.navigate('WorkoutDetail', { workout: featuredWorkout })}
             />
           ) : (
-            <Text style={styles.emptyText}>No workouts available.</Text>
+            <EmptyState
+              icon="barbell-outline"
+              title="No workouts yet"
+              message="Check back soon or add workouts via the admin panel."
+            />
           )}
         </View>
 
@@ -82,7 +101,12 @@ export default function HomeScreen({ navigation }: Props) {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Suggested Meal</Text>
-            <Pressable onPress={() => navigation.navigate('MealList')} hitSlop={8}>
+            <Pressable
+              onPress={() => navigation.navigate('MealList')}
+              hitSlop={8}
+              accessibilityRole="button"
+              accessibilityLabel="See all meals"
+            >
               <Text style={styles.seeAll}>See All</Text>
             </Pressable>
           </View>
@@ -94,7 +118,11 @@ export default function HomeScreen({ navigation }: Props) {
               onPress={() => navigation.navigate('MealDetail', { meal: featuredMeal })}
             />
           ) : (
-            <Text style={styles.emptyText}>No meals available.</Text>
+            <EmptyState
+              icon="restaurant-outline"
+              title="No meals yet"
+              message="Meals will appear here once they are added."
+            />
           )}
         </View>
 
@@ -110,15 +138,30 @@ export default function HomeScreen({ navigation }: Props) {
 
         {/* Quick links */}
         <View style={styles.quickLinks}>
-          <Pressable style={styles.quickLink} onPress={() => navigation.navigate('Weight')}>
+          <Pressable
+            style={styles.quickLink}
+            onPress={() => navigation.navigate('Weight')}
+            accessibilityRole="button"
+            accessibilityLabel="Go to Weight Tracker"
+          >
             <Ionicons name="barbell-outline" size={20} color={colors.primary} />
             <Text style={styles.quickLinkText}>Weight</Text>
           </Pressable>
-          <Pressable style={styles.quickLink} onPress={() => navigation.navigate('Profile')}>
+          <Pressable
+            style={styles.quickLink}
+            onPress={() => navigation.navigate('Profile')}
+            accessibilityRole="button"
+            accessibilityLabel="Go to Profile"
+          >
             <Ionicons name="person-outline" size={20} color={colors.primary} />
             <Text style={styles.quickLinkText}>Profile</Text>
           </Pressable>
-          <Pressable style={styles.quickLink} onPress={() => navigation.navigate('Settings')}>
+          <Pressable
+            style={styles.quickLink}
+            onPress={() => navigation.navigate('Settings')}
+            accessibilityRole="button"
+            accessibilityLabel="Go to Settings"
+          >
             <Ionicons name="settings-outline" size={20} color={colors.primary} />
             <Text style={styles.quickLinkText}>Settings</Text>
           </Pressable>
@@ -208,12 +251,6 @@ const styles = StyleSheet.create({
   },
   sectionLoader: {
     paddingVertical: spacing.lg,
-  },
-  emptyText: {
-    fontSize: typography.fontSize.sm,
-    color: colors.text.secondary,
-    textAlign: 'center',
-    paddingVertical: spacing.md,
   },
   quickLinks: {
     flexDirection: 'row',

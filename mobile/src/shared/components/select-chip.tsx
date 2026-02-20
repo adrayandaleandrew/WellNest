@@ -13,6 +13,9 @@ export default function SelectChip({ label, subtitle, isSelected, onPress }: Pro
     <Pressable
       style={[styles.chip, isSelected && styles.chipSelected]}
       onPress={onPress}
+      accessibilityRole="checkbox"
+      accessibilityState={{ checked: isSelected }}
+      accessibilityLabel={label}
     >
       <Text style={[styles.label, isSelected && styles.labelSelected]}>{label}</Text>
       {subtitle ? (

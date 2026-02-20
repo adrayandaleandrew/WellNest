@@ -9,14 +9,22 @@ import {
   formatGenderLabel,
 } from '../../../shared/utils/profile-utils';
 import PrimaryButton from '../../../shared/components/primary-button';
+import LoadingState from '../../../shared/components/loading-state';
+import ErrorState from '../../../shared/components/error-state';
 import { colors, spacing, typography, borderRadius } from '../../../shared/constants/theme';
 
 type Props = NativeStackScreenProps<MainStackParamList, 'Profile'>;
 
 export default function ProfileScreen({ navigation }: Props) {
-  const { profile } = useProfile();
+  const { profile, isLoadingProfile } = useProfile();
 
-  if (!profile) return null;
+  if (isLoadingProfile) {
+    return <LoadingState label="Loading profile..." />;
+  }
+
+  if (!profile) {
+    return <ErrorState message="Could not load your profile." />;
+  }
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>

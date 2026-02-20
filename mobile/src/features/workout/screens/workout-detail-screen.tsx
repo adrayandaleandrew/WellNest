@@ -43,6 +43,8 @@ export default function WorkoutDetailScreen({ route, navigation }: Props) {
         <Pressable
           style={styles.startButton}
           onPress={() => navigation.navigate('WorkoutMode', { workout })}
+          accessibilityRole="button"
+          accessibilityLabel="Start Workout"
         >
           <Text style={styles.startButtonText}>Start Workout</Text>
         </Pressable>

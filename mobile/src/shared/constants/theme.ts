@@ -7,6 +7,7 @@ export const colors = {
   background: '#FAFAFA',
   surface: '#FFFFFF',
   error: '#D32F2F',
+  errorSurface: '#FFEBEE',
   success: '#388E3C',
   warning: '#FFA000',
   text: {
