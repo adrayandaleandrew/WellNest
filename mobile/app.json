@@ -32,6 +32,12 @@
     },
     "plugins": [
       "expo-secure-store"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "5ac430ea-3318-4007-836f-f051acb2eb57"
+      }
+    },
+    "owner": "adrayandaleandrew"
   }
 }
