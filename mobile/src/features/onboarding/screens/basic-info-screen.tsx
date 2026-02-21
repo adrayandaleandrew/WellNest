@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -51,6 +51,7 @@ export default function BasicInfoScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <StepProgressBar currentStep={2} totalSteps={4} />
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView
         contentContainerStyle={styles.content}
         keyboardShouldPersistTaps="handled"
@@ -112,6 +113,7 @@ export default function BasicInfoScreen({ navigation }: Props) {
           </View>
         </View>
       </ScrollView>
+      </KeyboardAvoidingView>
       <View style={styles.footer}>
         <PrimaryButton title="Next" onPress={handleNext} />
       </View>
@@ -127,7 +129,6 @@ const styles = StyleSheet.create({
   content: {
     padding: spacing.lg,
     paddingTop: spacing.md,
-    paddingBottom: 300,
   },
   title: {
     fontSize: typography.fontSize.xxl,

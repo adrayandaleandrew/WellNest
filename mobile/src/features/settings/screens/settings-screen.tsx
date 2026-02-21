@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { MainStackParamList } from '../../../app/navigation/root-navigator';
 import { useAuth } from '../../../shared/contexts/auth-context';
@@ -14,7 +15,8 @@ export default function SettingsScreen({ navigation }: Props) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.safeArea} edges={['bottom']}>
+      <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
       <View style={styles.userInfo}>
         <Text style={styles.label}>Signed in as</Text>
         <Text style={styles.email}>{user?.email}</Text>
@@ -43,14 +45,20 @@ export default function SettingsScreen({ navigation }: Props) {
       >
         <Text style={styles.logoutText}>Log Out</Text>
       </Pressable>
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: colors.background,
+  },
+  scroll: {
+    flex: 1,
+  },
+  content: {
     padding: spacing.lg,
   },
   userInfo: {

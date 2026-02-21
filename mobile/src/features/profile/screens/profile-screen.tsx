@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { MainStackParamList } from '../../../app/navigation/root-navigator';
 import { useProfile } from '../../../shared/contexts/profile-context';
@@ -27,7 +28,8 @@ export default function ProfileScreen({ navigation }: Props) {
   }
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <SafeAreaView style={styles.safeArea} edges={['bottom']}>
+    <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
       <ProfileField label="Name" value={profile.displayName} />
       <ProfileField label="Email" value={profile.email} />
       <ProfileField label="Date of Birth" value={profile.dateOfBirth} />
@@ -53,6 +55,7 @@ export default function ProfileScreen({ navigation }: Props) {
         />
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -66,9 +69,12 @@ function ProfileField({ label, value }: { label: string; value: string }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: colors.background,
+  },
+  scroll: {
+    flex: 1,
   },
   content: {
     padding: spacing.lg,
