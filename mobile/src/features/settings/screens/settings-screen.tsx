@@ -28,6 +28,14 @@ export default function SettingsScreen({ navigation }: Props) {
         <Text style={styles.menuItemText}>My Profile</Text>
       </Pressable>
       <Pressable
+        style={styles.menuItem}
+        onPress={() => navigation.navigate('Feedback')}
+        accessibilityRole="button"
+        accessibilityLabel="Send Feedback"
+      >
+        <Text style={styles.menuItemText}>Send Feedback</Text>
+      </Pressable>
+      <Pressable
         style={styles.logoutButton}
         onPress={handleLogout}
         accessibilityRole="button"
