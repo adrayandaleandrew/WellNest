@@ -28,12 +28,15 @@ jobs:
       - name: Build Android APK (EAS preview)
         working-directory: mobile
         run: |
-          BUILD_URL=$(eas build \
+          # --wait blocks until EAS cloud build finishes; --json outputs to stdout
+          eas build \
             --platform android \
             --profile preview \
             --non-interactive \
+            --wait \
             --json \
-            | jq -r '.artifacts.buildUrl')
+            2>/dev/null > /tmp/eas-build-output.json
+          BUILD_URL=$(jq -r '.[0].artifacts.buildUrl' /tmp/eas-build-output.json)
           curl -L "$BUILD_URL" -o wellnest-${{ github.ref_name }}.apk
 
       - name: Create GitHub Release
