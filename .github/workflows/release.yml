@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    name: Build APK & Create GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install mobile dependencies
+        working-directory: mobile
+        run: npm ci
+
+      - name: Build Android APK (EAS preview)
+        working-directory: mobile
+        run: |
+          BUILD_URL=$(eas build \
+            --platform android \
+            --profile preview \
+            --non-interactive \
+            --json \
+            | jq -r '.artifacts.buildUrl')
+          curl -L "$BUILD_URL" -o wellnest-${{ github.ref_name }}.apk
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: WellNest ${{ github.ref_name }}
+          files: mobile/wellnest-${{ github.ref_name }}.apk
+          body: |
+            ## WellNest Beta — ${{ github.ref_name }}
+
+            ### Install on Android
+            1. Download `wellnest-*.apk` below
+            2. Settings → Security → enable **Install unknown apps**
+            3. Open the downloaded file → Install
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
