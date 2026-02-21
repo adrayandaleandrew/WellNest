@@ -123,11 +123,11 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   statCard: {
+    flex: 1,
     backgroundColor: colors.surface,
     borderRadius: borderRadius.lg,
     padding: spacing.lg,
     alignItems: 'center',
-    minWidth: 130,
     borderWidth: 1,
     borderColor: colors.border,
   },

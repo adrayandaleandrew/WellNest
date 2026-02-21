@@ -461,6 +461,59 @@ Ensure reliability.
 
 ---
 
+# 🔧 PHASE 13 — MOBILE RESPONSIVE UI (SAFE AREA & KEYBOARD FIXES)
+
+## Objective
+
+Fix cross-cutting safe area and keyboard avoidance issues discovered in post-launch audit. Ensure all screens handle notches, Dynamic Islands, home indicators, and software keyboards correctly on modern iOS and Android devices.
+
+---
+
+## Root Cause Summary
+
+| Problem | Effect |
+|---|---|
+| Missing `SafeAreaView` | Content overlaps notch / Dynamic Island / home indicator |
+| Missing `KeyboardAvoidingView` | Keyboard covers text inputs |
+
+**Rule — stack-navigator screens** (with nav header): only `edges={['bottom']}` needed.
+**Rule — headerless screens** (auth, onboarding): full `SafeAreaView` (all edges).
+
+---
+
+## Tasks
+
+- [x] Fix `login-screen.tsx` — wrap `KeyboardAvoidingView` with `SafeAreaView` (all edges)
+- [x] Fix `register-screen.tsx` — same pattern as login
+- [x] Fix `basic-info-screen.tsx` — add `KeyboardAvoidingView`, remove `paddingBottom: 300` hack
+- [x] Fix `edit-profile-screen.tsx` — add `SafeAreaView edges={['bottom']}` + `KeyboardAvoidingView`
+- [x] Fix `settings-screen.tsx` — add `SafeAreaView edges={['bottom']}` + `ScrollView`
+- [x] Fix `profile-screen.tsx` — add `SafeAreaView edges={['bottom']}`
+- [x] Fix `feedback-screen.tsx` — add `KeyboardAvoidingView` (already has `SafeAreaView`)
+- [x] Fix `workout-complete-screen.tsx` — replace `minWidth: 130` with `flex: 1` on `statCard`
+
+---
+
+## Skills Referenced
+
+- `vercel-react-native-skills` — `ui-safe-area-scroll`, `ui-scrollview-content-inset`, `ui-styling`
+- `mobile-design/platform-ios.md` — safe area anatomy, notch/Dynamic Island handling
+- `mobile-design/platform-android.md` — edge-to-edge display (Android 15+)
+- `mobile-design/touch-psychology.md` — touch target ≥ 44px
+
+---
+
+## Acceptance Criteria
+
+- iPhone SE (375pt) — no content clipped at top or bottom
+- iPhone 15 Pro (Dynamic Island) — content below Dynamic Island, above home indicator
+- Tap any text input — keyboard slides in, input stays visible
+- Rotate to landscape — content still scrollable, not clipped
+
+---
+
+---
+
 # 📌 NON-GOALS (FOR NOW)
 
 - AI coaching
