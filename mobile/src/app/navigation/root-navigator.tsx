@@ -46,7 +46,7 @@ function MainNavigator() {
         headerTitleAlign: 'center',
       }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'WellNest' }} />
+      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: 'Settings' }} />
       <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'My Profile' }} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} options={{ title: 'Edit Profile' }} />

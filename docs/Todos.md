@@ -612,6 +612,70 @@ useEffect(() => {
 
 ---
 
+# ✅ PHASE 15 — BUG FIXES (POST-PHASE-14 TESTING)
+
+## Objective
+
+Fix 2 bugs discovered during post-Phase-14 device testing. Targeted fixes only — no new features, no refactoring.
+
+---
+
+## Bug Inventory
+
+| # | Screen | Symptom |
+|---|---|---|
+| 1 | Workout Mode (rest phase) | Error toast: "Cannot update a component" still firing during rest timer |
+| 2 | Home | Redundant "WellNest" navigation header visible above custom greeting |
+
+---
+
+## Root Cause Summary
+
+### Bug 1 — use-timer.ts: impure state updater
+
+**File:** `mobile/src/shared/hooks/use-timer.ts`
+
+**Root cause:** `clearTimer()`, `setIsRunning(false)`, and `onCompleteRef.current?.()` were called inside the `setSecondsLeft` functional updater body. React's concurrent mode contract requires updaters to be pure — calling external setState or side effects from within an updater triggers "Cannot update a component while rendering a different component".
+
+**Fix:** Pure updater + `completedRef` flag + `useEffect` that fires after React commits `secondsLeft = 0`.
+
+---
+
+### Bug 2 — Home screen: redundant navigation header
+
+**File:** `mobile/src/app/navigation/root-navigator.tsx` + `mobile/src/features/home/screens/home-screen.tsx`
+
+**Root cause:** Home had `title: 'WellNest'` in navigator options, producing a redundant header above the in-content greeting. Phase 14's `edges={['bottom']}` fix made the greeting visible but left the nav bar intact.
+
+**Fix:** `headerShown: false` on Home stack screen (consistent with WorkoutMode and WorkoutComplete). SafeAreaView reverts to full edges (all four) since headerless screens must handle the top status bar inset themselves.
+
+---
+
+## Tasks
+
+- [x] Fix `use-timer.ts` — pure updater + `completedRef` guard + completion `useEffect`
+- [x] Fix `root-navigator.tsx` — `headerShown: false` on Home screen
+- [x] Fix `home-screen.tsx` — restore full `SafeAreaView` edges (headerless screen pattern)
+
+---
+
+## Skills Referenced
+
+- `vercel-react-native-skills` — Priority 5 (State purity), Priority 6 (Rendering rules)
+- `vercel-react-native-skills/rules/rendering-no-falsy-and.md` — side effects must not occur during render/updater
+- `mobile-design/platform-android.md` — Top App Bar / headerless screen safe area rules
+
+---
+
+## Acceptance Criteria
+
+- Rest phase timer counts down → no error toast → moves to next exercise
+- Completing all sets → WorkoutComplete screen with no error toast at any point
+- Home screen shows no "WellNest" navigation header; greeting visible directly below status bar
+- No content clipped top or bottom on Home
+
+---
+
 # 📌 NON-GOALS (FOR NOW)
 
 - AI coaching
