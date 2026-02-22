@@ -1,5 +1,6 @@
 import { ActivityIndicator, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../../shared/contexts/auth-context';
 import { useProfile } from '../../shared/contexts/profile-context';
 import AuthNavigator from '../../features/auth/navigation/auth-navigator';
@@ -38,12 +39,16 @@ export type MainStackParamList = {
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
 function MainNavigator() {
+  const insets = useSafeAreaInsets();
   return (
     <Stack.Navigator
       initialRouteName="Home"
       screenOptions={{
         headerShown: true,
         headerTitleAlign: 'center',
+        // Shift the back button right of any display cutout (e.g. punch-hole camera).
+        // insets.left is 0 on devices without a left cutout — no visual change.
+        headerLeftContainerStyle: { paddingLeft: insets.left },
       }}
     >
       <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
@@ -55,7 +60,13 @@ function MainNavigator() {
       <Stack.Screen name="WorkoutMode" component={WorkoutModeScreen} options={{ headerShown: false, presentation: 'fullScreenModal' }} />
       <Stack.Screen name="WorkoutComplete" component={WorkoutCompleteScreen} options={{ headerShown: false }} />
       <Stack.Screen name="MealList" component={MealListScreen} options={{ title: 'Meals' }} />
-      <Stack.Screen name="MealDetail" component={MealDetailScreen} options={{ title: 'Meal Details' }} />
+      <Stack.Screen
+        name="MealDetail"
+        component={MealDetailScreen}
+        // options function reads meal.name from route params synchronously at
+        // navigation time — no "Meal Details" flash on slower devices.
+        options={({ route }) => ({ title: route.params.meal.name })}
+      />
       <Stack.Screen name="Weight" component={WeightScreen} options={{ title: 'Weight' }} />
       <Stack.Screen name="Feedback" component={FeedbackScreen} options={{ title: 'Send Feedback' }} />
     </Stack.Navigator>
