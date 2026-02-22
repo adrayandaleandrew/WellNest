@@ -26,7 +26,7 @@ export default function HomeScreen({ navigation }: Props) {
   const firstName = profile?.displayName?.split(' ')[0] ?? 'there';
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['bottom']}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
 
         {/* Greeting — fades in on mount */}

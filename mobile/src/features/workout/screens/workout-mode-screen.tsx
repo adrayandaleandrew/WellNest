@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { StyleSheet, Text, View, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -25,11 +26,15 @@ export default function WorkoutModeScreen({ route, navigation }: Props) {
     );
   };
 
-  if (session.phase === 'complete') {
-    const summary = session.getSummary();
-    navigation.replace('WorkoutComplete', { summary, workoutId: workout.id });
-    return null;
-  }
+  // Navigate to WorkoutComplete in an effect to avoid updating the navigator during render
+  useEffect(() => {
+    if (session.phase === 'complete') {
+      navigation.replace('WorkoutComplete', {
+        summary: session.getSummary(),
+        workoutId: workout.id,
+      });
+    }
+  }, [session.phase]);
 
   if (session.phase === 'rest') {
     return (
