@@ -511,6 +511,104 @@ Fix cross-cutting safe area and keyboard avoidance issues discovered in post-lau
 - Rotate to landscape — content still scrollable, not clipped
 
 ---
+# ✅ PHASE 14 — BUG FIXES (POST-PHASE-13 TESTING)
+
+## Objective
+
+Fix 3 bugs discovered during Expo test session on a physical Android device (2026-02-22).
+
+Context: Post-Phase-13 testing revealed these issues. Targeted fixes only — no new features, no refactoring.
+
+---
+
+## Bug Inventory
+
+| # | Screen | Symptom |
+|---|---|---|
+| 1 | Workout Mode | Error toast: "Cannot update a component (WorkoutMo...)" |
+| 2 | Meal Detail | Nav header shows generic "Meal Details"; in-content meal name is redundant |
+| 3 | Home | "Hey, John 👋" greeting clipped behind the navigation header |
+
+---
+
+## Bug Details
+
+### Bug 1 — Workout Mode: render-time navigation causes React warning
+
+**File:** `mobile/src/features/workout/screens/workout-mode-screen.tsx`
+
+**Root cause:** `navigation.replace()` is called directly inside the render function when `session.phase === 'complete'`. React prohibits updating a component (the navigator) while rendering another (WorkoutModeScreen), causing the error toast.
+
+**Fix:** Move the navigation call into a `useEffect` that fires when `session.phase` changes.
+
+```tsx
+// DELETE this block from render:
+if (session.phase === 'complete') {
+  const summary = session.getSummary();
+  navigation.replace('WorkoutComplete', { summary, workoutId: workout.id });
+  return null;
+}
+
+// ADD after all hook calls, before any conditional returns:
+useEffect(() => {
+  if (session.phase === 'complete') {
+    navigation.replace('WorkoutComplete', {
+      summary: session.getSummary(),
+      workoutId: workout.id,
+    });
+  }
+}, [session.phase]);
+```
+
+---
+
+### Bug 2 — Meal Detail: generic header title / redundant content name
+
+**File:** `mobile/src/features/meal/screens/meal-detail-screen.tsx`
+
+**Root cause:** `root-navigator.tsx` has a static `title: 'Meal Details'`. The content body also renders `<Text style={styles.name}>{meal.name}</Text>` — creating a mismatch between the generic header and the specific in-content name.
+
+**Fix:**
+1. Destructure `navigation` from props (currently only `route` is used).
+2. Add `useEffect(() => { navigation.setOptions({ title: meal.name }); }, [meal.name, navigation])` so the header dynamically shows the specific meal name.
+3. Remove `<Text style={styles.name}>{meal.name}</Text>` from JSX — the header now carries the name. Content begins with the description.
+4. Remove `styles.name` from `StyleSheet.create`.
+
+> Note: No changes to `root-navigator.tsx` — `'Meal Details'` remains as a loading fallback.
+
+---
+
+### Bug 3 — Home: greeting clipped under navigation header
+
+**File:** `mobile/src/features/home/screens/home-screen.tsx`
+
+**Root cause:** `SafeAreaView` uses default edges (all four). On Android inside a native stack navigator with `headerShown: true`, the top safe area inset only accounts for the status bar (~24dp), not the navigation header (~56dp). Content ends up partially behind the header.
+
+**Fix:** Change to `edges={['bottom']}` — the correct pattern for all stack-navigator screens (established in Phase 13).
+
+```tsx
+// Before
+<SafeAreaView style={styles.container}>
+
+// After
+<SafeAreaView style={styles.container} edges={['bottom']}>
+```
+
+---
+
+## Tasks
+
+- [x] Fix `workout-mode-screen.tsx` — move `navigation.replace()` from render into `useEffect`
+- [x] Fix `meal-detail-screen.tsx` — dynamic header title via `navigation.setOptions`, remove in-content name text
+- [x] Fix `home-screen.tsx` — change `SafeAreaView` to `edges={['bottom']}` (stack-nav pattern)
+
+---
+
+## Acceptance Criteria
+
+- Completing a workout shows WorkoutComplete screen with no error toast
+- Meal detail header shows specific meal name (not "Meal Details")
+- Home screen greeting fully visible below navigation header on Android
 
 ---
 

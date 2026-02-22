@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -8,14 +9,18 @@ import { colors, spacing, typography, borderRadius } from '../../../shared/const
 
 type Props = NativeStackScreenProps<MainStackParamList, 'MealDetail'>;
 
-export default function MealDetailScreen({ route }: Props) {
+export default function MealDetailScreen({ route, navigation }: Props) {
   const { meal } = route.params;
+
+  // Set the header title to the specific meal name (fallback 'Meal Details' stays in root-navigator.tsx)
+  useEffect(() => {
+    navigation.setOptions({ title: meal.name });
+  }, [meal.name, navigation]);
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Name & description */}
-        <Text style={styles.name}>{meal.name}</Text>
+        {/* Description — header now shows the meal name */}
         <Text style={styles.description}>{meal.description}</Text>
 
         {/* Meta row: category badge, prep time, servings */}
@@ -84,12 +89,6 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: spacing.md,
     paddingBottom: spacing.xxl,
-  },
-  name: {
-    fontSize: typography.fontSize.xxl,
-    fontWeight: typography.fontWeight.bold,
-    color: colors.text.primary,
-    marginBottom: spacing.xs,
   },
   description: {
     fontSize: typography.fontSize.md,
