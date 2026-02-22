@@ -676,6 +676,72 @@ Fix 2 bugs discovered during post-Phase-14 device testing. Targeted fixes only �
 
 ---
 
+# ✅ PHASE 16 — BUG FIXES (POST-PHASE-15 TESTING)
+
+## Objective
+
+Fix 2 bugs discovered during post-Phase-15 device testing on a Realme GT Master Edition (punch-hole camera, top-left). Targeted fixes only — no new features, no refactoring.
+
+---
+
+## Bug Inventory
+
+| # | Component | Symptom |
+|---|---|---|
+| 1 | Back button (all screens) | Visually hidden behind punch-hole camera on Realme GT Master Edition |
+| 2 | Meal Detail header | Brief "Meal Details" flash before meal name on slower devices |
+
+---
+
+## Root Cause Summary
+
+### Bug 1 — Back button hidden by punch-hole camera
+
+**Files:** `mobile/App.tsx`, `mobile/src/app/navigation/root-navigator.tsx`
+
+**Root cause (A):** No explicit `SafeAreaProvider` at the app root. React Navigation's internal `SafeAreaProviderCompat` may not report a non-zero left inset for OEM display cutouts.
+
+**Root cause (B):** `MainNavigator` never applied `useSafeAreaInsets().left` to `headerLeftContainerStyle`, so the back button rendered at x=0 — behind the camera hole.
+
+**Fix:** Add `SafeAreaProvider` with `initialWindowMetrics` to `App.tsx`. Add `headerLeftContainerStyle: { paddingLeft: insets.left }` to `MainNavigator` screenOptions.
+
+---
+
+### Bug 2 — Meal Detail header flash
+
+**Files:** `mobile/src/app/navigation/root-navigator.tsx`, `mobile/src/features/meal/screens/meal-detail-screen.tsx`
+
+**Root cause:** Phase 14's `useEffect + setOptions` pattern runs AFTER the first render, causing a one-frame "Meal Details" flash on slower devices.
+
+**Fix:** Replace static title with an `options` function that reads `route.params.meal.name` synchronously at navigation time. Remove now-redundant `useEffect` from the screen component.
+
+---
+
+## Tasks
+
+- [x] Fix `App.tsx` — wrap app in `SafeAreaProvider` with `initialWindowMetrics`
+- [x] Fix `root-navigator.tsx` — add `headerLeftContainerStyle: { paddingLeft: insets.left }` to `MainNavigator` screenOptions
+- [x] Fix `root-navigator.tsx` — replace static `MealDetail` title with `options={({ route }) => ({ title: route.params.meal.name })}`
+- [x] Fix `meal-detail-screen.tsx` — remove `useEffect` + `navigation` prop (navigator handles title)
+
+---
+
+## Skills Referenced
+
+- `vercel-react-native-skills` — `ui-safe-area-scroll`, rendering rules
+- `mobile-design/platform-android.md` — Display cutout / punch-hole camera handling
+
+---
+
+## Acceptance Criteria
+
+- Back button (←) visible to the right of the punch-hole camera on Realme GT Master Edition
+- Meal Detail header immediately shows specific meal name — no "Meal Details" flash
+- `insets.left = 0` on devices without display cutout — no visual change to header alignment
+- All other screens unaffected; Home screen (headerShown: false) unaffected
+
+---
+
 # 📌 NON-GOALS (FOR NOW)
 
 - AI coaching

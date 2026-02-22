@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -9,13 +8,8 @@ import { colors, spacing, typography, borderRadius } from '../../../shared/const
 
 type Props = NativeStackScreenProps<MainStackParamList, 'MealDetail'>;
 
-export default function MealDetailScreen({ route, navigation }: Props) {
+export default function MealDetailScreen({ route }: Props) {
   const { meal } = route.params;
-
-  // Set the header title to the specific meal name (fallback 'Meal Details' stays in root-navigator.tsx)
-  useEffect(() => {
-    navigation.setOptions({ title: meal.name });
-  }, [meal.name, navigation]);
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
