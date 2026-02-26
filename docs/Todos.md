@@ -742,6 +742,36 @@ Fix 2 bugs discovered during post-Phase-15 device testing on a Realme GT Master 
 
 ---
 
+# 🔧 PHASE 17 — MOBILE E2E TESTS
+
+## Objective
+
+Implement the three mobile E2E flows required by QA-TestAutomation.md using Maestro.
+Tests run locally against a connected Android device or emulator.
+
+---
+
+## Tasks
+
+- [x] Add testIDs to `login-screen.tsx` (email + password inputs)
+- [x] Add testIDs to `home-screen.tsx` (root, streak count, see-all-workouts)
+- [x] Create `tests/e2e/mobile/login-flow.yaml`
+- [x] Create `tests/e2e/mobile/workout-flow.yaml`
+- [x] Create `tests/e2e/mobile/logging-progress-flow.yaml`
+- [x] Add `test:e2e:mobile` script to root `package.json`
+- [x] Update `.env.example` with Maestro env vars
+
+---
+
+## Acceptance Criteria
+
+- Login flow passes on a physical Android device
+- Workout flow passes: navigates list → detail → mode → quit
+- Logging progress flow passes: completes workout → home shows "logged today"
+- No existing tests broken
+
+---
+
 # 📌 NON-GOALS (FOR NOW)
 
 - AI coaching

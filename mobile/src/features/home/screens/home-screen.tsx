@@ -26,7 +26,7 @@ export default function HomeScreen({ navigation }: Props) {
   const firstName = profile?.displayName?.split(' ')[0] ?? 'there';
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} testID="home-screen">
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
 
         {/* Greeting — fades in on mount */}
@@ -45,7 +45,7 @@ export default function HomeScreen({ navigation }: Props) {
             <>
               <View style={styles.streakRow}>
                 <Ionicons name="flame" size={32} color={colors.secondary} />
-                <Text style={styles.streakCount}>{streak?.currentStreak ?? 0}</Text>
+                <Text style={styles.streakCount} testID="home-streak-count">{streak?.currentStreak ?? 0}</Text>
                 <Text style={styles.streakLabel}>day streak</Text>
               </View>
               <Text style={styles.streakSub}>
@@ -73,6 +73,7 @@ export default function HomeScreen({ navigation }: Props) {
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Today's Workout</Text>
             <Pressable
+              testID="see-all-workouts"
               onPress={() => navigation.navigate('WorkoutList')}
               hitSlop={8}
               accessibilityRole="button"

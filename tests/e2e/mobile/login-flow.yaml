@@ -1,0 +1,18 @@
+appId: com.wellnest.app
+env:
+  MAESTRO_APP_EMAIL: ${MAESTRO_APP_EMAIL}
+  MAESTRO_APP_PASSWORD: ${MAESTRO_APP_PASSWORD}
+---
+- launchApp
+- assertVisible:
+    id: "login-email-input"
+- tapOn:
+    id: "login-email-input"
+- inputText: ${MAESTRO_APP_EMAIL}
+- tapOn:
+    id: "login-password-input"
+- inputText: ${MAESTRO_APP_PASSWORD}
+- tapOn:
+    text: "Log In"
+- assertVisible:
+    id: "home-screen"

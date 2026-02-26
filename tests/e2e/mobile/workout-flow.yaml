@@ -1,0 +1,31 @@
+appId: com.wellnest.app
+env:
+  MAESTRO_APP_EMAIL: ${MAESTRO_APP_EMAIL}
+  MAESTRO_APP_PASSWORD: ${MAESTRO_APP_PASSWORD}
+---
+- runFlow: login-flow.yaml
+- assertVisible:
+    id: "home-screen"
+- tapOn:
+    id: "see-all-workouts"
+- assertVisible:
+    text: "E2E Test Workout"
+- tapOn:
+    text: "E2E Test Workout"
+- assertVisible:
+    text: "Start Workout"
+- tapOn:
+    text: "Start Workout"
+- assertVisible:
+    text: "Complete Set"
+- tapOn:
+    text: "Complete Set"
+# After completing a set the screen shows either rest timer or the next set
+- waitForAnimationToEnd
+# Quit the workout via the header Quit button + native alert confirmation
+- tapOn:
+    text: "Quit"
+- tapOn:
+    text: "Quit"
+- assertVisible:
+    id: "home-screen"
