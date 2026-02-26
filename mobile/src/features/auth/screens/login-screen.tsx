@@ -67,6 +67,7 @@ export default function LoginScreen({ navigation }: Props) {
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Email</Text>
           <TextInput
+            testID="login-email-input"
             style={[styles.input, errors.email && styles.inputError]}
             placeholder="you@example.com"
             placeholderTextColor={colors.text.disabled}
@@ -83,6 +84,7 @@ export default function LoginScreen({ navigation }: Props) {
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Password</Text>
           <TextInput
+            testID="login-password-input"
             style={[styles.input, errors.password && styles.inputError]}
             placeholder="Enter your password"
             placeholderTextColor={colors.text.disabled}

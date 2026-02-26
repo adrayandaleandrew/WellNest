@@ -1,0 +1,23 @@
+appId: com.wellnest.app
+env:
+  MAESTRO_APP_EMAIL: ${MAESTRO_APP_EMAIL}
+  MAESTRO_APP_PASSWORD: ${MAESTRO_APP_PASSWORD}
+---
+- runFlow: login-flow.yaml
+- tapOn:
+    id: "see-all-workouts"
+- tapOn:
+    text: "E2E Test Workout"
+- tapOn:
+    text: "Start Workout"
+- tapOn:
+    text: "Complete Set"
+- waitForAnimationToEnd
+- assertVisible:
+    text: "Workout Complete!"
+- tapOn:
+    text: "Done"
+- assertVisible:
+    id: "home-screen"
+- assertVisible:
+    text: "You've already logged today"

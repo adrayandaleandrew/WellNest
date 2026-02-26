@@ -21,6 +21,9 @@ admin/build/
 .vscode/
 .idea/
 
+# Claude Code local settings (machine-specific)
+.claude/
+
 # OS
 .DS_Store
 Thumbs.db
