@@ -826,6 +826,43 @@ Raise service-layer unit test coverage from ~11% to ~70–80% by adding tests fo
 
 ---
 
+# ✅ PHASE 20 — FIREBASE CLOUD FUNCTIONS
+
+## Objective
+
+Bootstrap the Cloud Functions layer with two focused, secure server-side functions that add real value: a guaranteed user stub on signup and a nightly analytics aggregation for the admin dashboard.
+
+---
+
+## Tasks
+
+- [x] Create `backend/functions/package.json` — npm config, deps (`firebase-admin`, `firebase-functions`), build script
+- [x] Create `backend/functions/tsconfig.json` — TypeScript config (CommonJS output → `lib/`)
+- [x] Create `backend/functions/src/index.ts` — `initializeApp()` + re-exports
+- [x] Create `backend/functions/src/on-user-created.ts` — Auth trigger: writes minimal user stub on signup
+- [x] Create `backend/functions/src/scheduled-analytics.ts` — Nightly cron: pre-computes admin dashboard totals
+- [x] Update `firebase.json` — add `"runtime": "nodejs20"` to functions config
+
+---
+
+## Functions
+
+| Function | Trigger | Purpose |
+|---|---|---|
+| `onUserCreated` | Auth `user().onCreate` | Writes `users/{uid}` stub immediately after signup |
+| `scheduledAnalytics` | Cron `5 0 * * *` (00:05 UTC) | Aggregates counts into `analytics/summary` doc |
+
+---
+
+## Acceptance Criteria
+
+- `npm run build` in `backend/functions/` compiles without errors
+- Register a new user → `users/{uid}` doc appears in Firestore with `onboardingComplete: false`
+- Nightly cron fires → `analytics/summary` doc written with `totalUsers`, `totalWorkouts`, `totalMeals`, `totalWorkoutLogs`
+- Admin dashboard still loads correctly
+
+---
+
 # 📌 NON-GOALS (FOR NOW)
 
 - AI coaching
