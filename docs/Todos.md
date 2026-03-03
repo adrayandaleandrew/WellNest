@@ -892,6 +892,54 @@ Wire the `analytics/summary` doc (written by Phase 20's `scheduledAnalytics` fun
 
 ---
 
+# ✅ PHASE 22 — PASSWORD RESET + ADMIN FEEDBACK VIEWER + PUSH NOTIFICATIONS
+
+## Objective
+
+Close three user-facing gaps identified in a full codebase review: no password reset flow, no admin feedback viewer, and no push notification implementation.
+
+---
+
+## Tasks
+
+### Feature 1 — Password Reset (Mobile)
+- [x] Add `sendPasswordReset()` to `auth-service.ts` (wraps Firebase `sendPasswordResetEmail`)
+- [x] Add `ForgotPassword` screen to `AuthStackParamList` in `auth-navigator.tsx`
+- [x] Create `forgot-password-screen.tsx` — email field, inline validation, non-enumerating success message
+- [x] Add "Forgot password?" link to `login-screen.tsx` (right-aligned, primary colour)
+- [x] Add `sendPasswordReset` tests to `auth-service.test.ts`
+
+### Feature 2 — Admin Feedback Viewer
+- [x] Create `admin/src/shared/types/feedback.ts` — `FeedbackItem` type
+- [x] Add collectionGroup index to `backend/firestore/firestore.indexes.json` (`feedback.createdAt DESC`)
+- [x] Create `admin/src/features/feedback/services/feedback-service.ts` — `getFeedback()` via collectionGroup
+- [x] Create `admin/src/features/feedback/pages/feedback-page.tsx` — table with stars, truncation, Show more/less
+- [x] Add `/feedback` route to `admin/src/app/router.tsx`
+- [x] Add Feedback nav item + SVG icon to `admin/src/shared/components/layout/admin-layout.tsx`
+
+### Feature 3 — Push Notifications
+- [x] Create `mobile/src/shared/services/notification-service.ts` — register, savePushToken, setupListeners
+- [x] Create `backend/functions/src/send-daily-reminder.ts` — cron `0 9 * * *`, Expo Push API, chunks of 100
+- [x] Export `sendDailyReminder` from `backend/functions/src/index.ts`
+- [x] Add `expo-notifications ~0.30.0` to `mobile/package.json`
+- [x] Add `expo-notifications` plugin to `mobile/app.json`
+- [x] Wire push registration into `mobile/src/app/navigation/root-navigator.tsx`
+- [x] Create `tests/unit/notification-service.test.ts` — 5 tests (token, null paths, savePushToken, cleanup)
+
+---
+
+## Acceptance Criteria
+
+- All 147 unit tests pass
+- Admin panel builds without TypeScript errors
+- Login screen shows "Forgot password?" link → navigates to reset screen
+- Reset screen shows non-enumerating success message
+- Admin `/feedback` route loads with star ratings, truncation, Show more/less
+- `sendDailyReminder` exported and visible in Firebase Console after deploy
+- Push token saved to `users/{uid}.pushToken` on physical device after permission granted
+
+---
+
 # 📌 NON-GOALS (FOR NOW)
 
 - AI coaching

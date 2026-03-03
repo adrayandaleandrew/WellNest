@@ -73,14 +73,15 @@ UI  -->  Service Layer  -->  Firebase
 
 ## Core Features
 
-- **Authentication** — Register, login, session persistence, protected routes
+- **Authentication** — Register, login, password reset, session persistence, protected routes
 - **Onboarding & Profile** — Goal selection, health flags, activity level, editable profile
 - **Workouts** — Browse workouts, workout mode with timer/rest, completion tracking
 - **Meals** — Meal list with filters, meal detail view
 - **Logs & Streaks** — Daily logging, streak calculation, home display
 - **Weight Tracking** — Weight entries, graph trends, history
 - **Home Dashboard** — Workout card, meal card, streak display, water tracker
-- **Admin Panel** — Workout/meal CRUD, user list, basic analytics
+- **Push Notifications** — Daily habit-building reminders via Expo Push API
+- **Admin Panel** — Workout/meal CRUD, user list, feedback viewer, analytics dashboard
 
 ---
 
@@ -227,6 +228,7 @@ All project standards and guidelines live in `docs/`:
 | 19 | Unit test coverage (~70–80% service layer) | Complete |
 | 20 | Firebase Cloud Functions (user stub + analytics) | Complete |
 | 21 | Analytics wiring + Cloud Functions tests | Complete |
+| 22 | Password reset + admin feedback viewer + push notifications | Complete |
 
 See [Todos.md](docs/Todos.md) for the full specification and task breakdown.
 
