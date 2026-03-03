@@ -97,6 +97,15 @@ export default function LoginScreen({ navigation }: Props) {
           {errors.password ? <Text style={styles.fieldError}>{errors.password}</Text> : null}
         </View>
 
+        <Pressable
+          onPress={() => navigation.navigate('ForgotPassword')}
+          style={styles.forgotPasswordContainer}
+          accessibilityRole="link"
+          accessibilityLabel="Forgot password?"
+        >
+          <Text style={styles.forgotPasswordText}>Forgot password?</Text>
+        </Pressable>
+
         <PrimaryButton
           title="Log In"
           onPress={handleLogin}
@@ -174,6 +183,16 @@ const styles = StyleSheet.create({
     color: colors.error,
     fontSize: typography.fontSize.xs,
     marginTop: spacing.xs,
+  },
+  forgotPasswordContainer: {
+    alignSelf: 'flex-end',
+    marginBottom: spacing.md,
+    minHeight: 44,
+    justifyContent: 'center',
+  },
+  forgotPasswordText: {
+    fontSize: typography.fontSize.sm,
+    color: colors.primary,
   },
   linkContainer: {
     marginTop: spacing.lg,
