@@ -205,19 +205,25 @@ All project standards and guidelines live in `docs/`:
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| 0 | Foundation & project setup | Pending |
-| 1 | Authentication | Pending |
-| 2 | Onboarding & profile | Pending |
-| 3 | Workout module | Pending |
-| 4 | Logs & streaks | Pending |
-| 5 | Meals | Pending |
-| 6 | Home dashboard | Pending |
-| 7 | Weight tracking | Pending |
-| 8 | Admin panel | Pending |
-| 9 | Testing | Pending |
-| 10 | Polish (loading/error/empty states, animations, a11y) | Pending |
-| 11 | Beta launch | Pending |
-| 12 | CI/CD pipeline | Pending |
+| 0 | Foundation & project setup | Complete |
+| 1 | Authentication | Complete |
+| 2 | Onboarding & profile | Complete |
+| 3 | Workout module | Complete |
+| 4 | Logs & streaks | Complete |
+| 5 | Meals | Complete |
+| 6 | Home dashboard | Complete |
+| 7 | Weight tracking | Complete |
+| 8 | Admin panel | Complete |
+| 9 | Testing | Complete |
+| 10 | Polish (loading/error/empty states, animations, a11y) | Complete |
+| 11 | Beta launch | Complete |
+| 12 | CI/CD pipeline | Complete |
+| 13 | Mobile responsive UI (safe area & keyboard fixes) | Complete |
+| 14 | Bug fixes (post-phase 13) | Complete |
+| 15 | Bug fixes (post-phase 14) | Complete |
+| 16 | Bug fixes (post-phase 15) | Complete |
+| 17 | Mobile E2E tests | Complete |
+| 18 | Documentation & rules cleanup | Complete |
 
 See [Todos.md](docs/Todos.md) for the full specification and task breakdown.
 

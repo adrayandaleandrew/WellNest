@@ -461,7 +461,7 @@ Ensure reliability.
 
 ---
 
-# 🔧 PHASE 13 — MOBILE RESPONSIVE UI (SAFE AREA & KEYBOARD FIXES)
+# ✅ PHASE 13 — MOBILE RESPONSIVE UI (SAFE AREA & KEYBOARD FIXES)
 
 ## Objective
 
@@ -742,7 +742,7 @@ Fix 2 bugs discovered during post-Phase-15 device testing on a Realme GT Master 
 
 ---
 
-# 🔧 PHASE 17 — MOBILE E2E TESTS
+# ✅ PHASE 17 — MOBILE E2E TESTS
 
 ## Objective
 
@@ -769,6 +769,32 @@ Tests run locally against a connected Android device or emulator.
 - Workout flow passes: navigates list → detail → mode → quit
 - Logging progress flow passes: completes workout → home shows "logged today"
 - No existing tests broken
+
+---
+
+# ✅ PHASE 18 — DOCUMENTATION & RULES CLEANUP
+
+## Objective
+
+Fix documentation gaps and comment inconsistencies discovered during codebase review.
+No code logic changes — documentation and comment accuracy only.
+
+---
+
+## Tasks
+
+- [x] Fix `firestore.rules` subcollection comment — add `feedback` to the covered subcollections list
+- [x] Fix `docs/Todos.md` — Phase 13 header emoji: 🔧 → ✅
+- [x] Fix `docs/Todos.md` — Phase 17 header emoji: 🔧 → ✅
+- [x] Fix `README.md` — update Phase roadmap table to reflect Phases 0–17 as Complete
+
+---
+
+## Acceptance Criteria
+
+- `firestore.rules` comment accurately lists all subcollections it covers
+- All completed phases in Todos.md show ✅ header emoji
+- README.md Phase table matches actual project state (Phases 0–17 complete)
 
 ---
 

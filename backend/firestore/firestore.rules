@@ -37,7 +37,7 @@ service cloud.firestore {
     }
 
     // User subcollections — owner-only read/write; admins can read
-    // Covers: workoutLogs, logs (daily activity logs), streak, water, weightLogs
+    // Covers: workoutLogs, logs (daily activity logs), streak, water, weightLogs, feedback
     match /users/{userId}/{subcollection=**} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
       allow read: if request.auth != null
