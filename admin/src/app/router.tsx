@@ -7,6 +7,7 @@ import DashboardPage from '../features/dashboard/pages/dashboard-page';
 import WorkoutsPage from '../features/workouts/pages/workouts-page';
 import MealsPage from '../features/meals/pages/meals-page';
 import UsersPage from '../features/users/pages/users-page';
+import FeedbackPage from '../features/feedback/pages/feedback-page';
 
 export default function AppRouter() {
   return (
@@ -27,6 +28,7 @@ export default function AppRouter() {
             <Route path="/workouts" element={<WorkoutsPage />} />
             <Route path="/meals" element={<MealsPage />} />
             <Route path="/users" element={<UsersPage />} />
+            <Route path="/feedback" element={<FeedbackPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
