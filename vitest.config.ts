@@ -24,5 +24,8 @@ export default defineConfig({
     alias: {
       '@mobile': path.resolve(__dirname, 'mobile/src'),
     },
+    // Force firebase-admin and firebase-functions to resolve from root node_modules,
+    // not from backend/functions/node_modules — ensures vi.mock() paths match.
+    dedupe: ['firebase-admin', 'firebase-functions'],
   },
 });

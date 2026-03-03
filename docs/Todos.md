@@ -863,6 +863,35 @@ Bootstrap the Cloud Functions layer with two focused, secure server-side functio
 
 ---
 
+# Phase 21 — Analytics Wiring + Cloud Functions Tests
+
+## Goal
+
+Wire the `analytics/summary` doc (written by Phase 20's `scheduledAnalytics` function) into the admin dashboard, add the missing Firestore security rule, write unit tests for both Cloud Functions, and fix a README inaccuracy.
+
+---
+
+## Tasks
+
+- [x] Add `analytics/{document=**}` read rule to `backend/firestore/firestore.rules` (admin-only; no write rule — Cloud Functions use Admin SDK)
+- [x] Create `admin/src/features/dashboard/services/analytics-service.ts` — reads `analytics/summary` doc
+- [x] Refactor `admin/src/features/dashboard/pages/dashboard-page.tsx` — replace 4 Firestore queries with single `getAnalyticsSummary()` call; show `lastUpdated` timestamp
+- [x] Create `tests/unit/on-user-created.test.ts` — 3 test cases for Auth trigger
+- [x] Create `tests/unit/scheduled-analytics.test.ts` — 3 test cases for nightly cron
+- [x] Fix `README.md` — "Jest (unit)" → "Vitest (unit)"
+- [x] Add Phase 21 row to README roadmap table
+
+---
+
+## Acceptance Criteria
+
+- `npm test` passes (13 existing + 6 new Cloud Function tests = 19 test files)
+- `cd admin && npm run build` compiles without TypeScript errors
+- Admin dashboard makes 1 Firestore read instead of 4 on page load
+- `analytics/summary` is readable by admins and blocked for regular users
+
+---
+
 # 📌 NON-GOALS (FOR NOW)
 
 - AI coaching

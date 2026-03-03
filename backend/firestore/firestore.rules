@@ -43,5 +43,11 @@ service cloud.firestore {
       allow read: if request.auth != null
         && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
     }
+
+    // Analytics — admin-only read; written exclusively by Cloud Functions (Admin SDK bypasses rules)
+    match /analytics/{document=**} {
+      allow read: if request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
   }
 }

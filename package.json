@@ -13,6 +13,8 @@
     "@playwright/test": "^1.50.0",
     "@vitest/coverage-v8": "^2.1.0",
     "dotenv": "^16.0.0",
+    "firebase-admin": "^13.7.0",
+    "firebase-functions": "^7.0.6",
     "vitest": "^2.1.0"
   }
 }
