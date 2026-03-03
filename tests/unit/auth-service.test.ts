@@ -6,6 +6,7 @@ vi.mock('firebase/auth', () => ({
   signInWithEmailAndPassword: vi.fn().mockResolvedValue({ user: {} }),
   signOut: vi.fn().mockResolvedValue(undefined),
   onAuthStateChanged: vi.fn().mockReturnValue(vi.fn()), // returns mock unsubscribe fn
+  sendPasswordResetEmail: vi.fn().mockResolvedValue(undefined),
 }));
 
 // Prevent actual Firebase app initialization (firebase.ts uses React Native deps)
@@ -19,6 +20,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import { auth } from '@mobile/shared/services/firebase';
 import {
@@ -26,12 +28,14 @@ import {
   registerWithEmail,
   logout,
   subscribeToAuthChanges,
+  sendPasswordReset,
 } from '@mobile/shared/services/auth-service';
 
 const mockSignIn = vi.mocked(signInWithEmailAndPassword);
 const mockRegister = vi.mocked(createUserWithEmailAndPassword);
 const mockSignOut = vi.mocked(signOut);
 const mockOnAuthStateChanged = vi.mocked(onAuthStateChanged);
+const mockSendPasswordResetEmail = vi.mocked(sendPasswordResetEmail);
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -99,5 +103,19 @@ describe('subscribeToAuthChanges', () => {
     const result = subscribeToAuthChanges(callback);
 
     expect(result).toBe(mockUnsubscribe);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// sendPasswordReset
+// ---------------------------------------------------------------------------
+describe('sendPasswordReset', () => {
+  it('calls sendPasswordResetEmail with auth and email', async () => {
+    const email = 'user@example.com';
+
+    await sendPasswordReset(email);
+
+    expect(mockSendPasswordResetEmail).toHaveBeenCalledOnce();
+    expect(mockSendPasswordResetEmail).toHaveBeenCalledWith(auth, email);
   });
 });
