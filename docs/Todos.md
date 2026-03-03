@@ -798,6 +798,34 @@ No code logic changes — documentation and comment accuracy only.
 
 ---
 
+# ✅ PHASE 19 — UNIT TEST COVERAGE
+
+## Objective
+
+Raise service-layer unit test coverage from ~11% to ~70–80% by adding tests for all 7 untested services.
+
+---
+
+## Tasks
+
+- [x] Create `tests/unit/meal-service.test.ts` — `getMeals`, `getMealById`
+- [x] Create `tests/unit/weight-service.test.ts` — `addWeightEntry`, `getWeightHistory`
+- [x] Create `tests/unit/water-service.test.ts` — `getWaterCount`, `updateWaterCount`
+- [x] Create `tests/unit/log-service.test.ts` — `getTodayLog`, `saveDailyLog`, `getStreak`, `calculateAndUpdateStreak`
+- [x] Create `tests/unit/profile-service.test.ts` — `getUserProfile`, `saveOnboardingProfile`, `updateUserProfile`
+- [x] Create `tests/unit/feedback-service.test.ts` — `submitFeedback`
+- [x] Create `tests/unit/workout-service.test.ts` — `getWorkouts`, `getWorkoutById`, `saveWorkoutLog`
+
+---
+
+## Acceptance Criteria
+
+- All 7 new test files pass
+- No existing tests broken
+- Coverage rises from ~11% to ~70–80% across the service layer
+
+---
+
 # 📌 NON-GOALS (FOR NOW)
 
 - AI coaching
