@@ -1,8 +1,14 @@
 import { ActivityIndicator, View } from 'react-native';
+import { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../../shared/contexts/auth-context';
 import { useProfile } from '../../shared/contexts/profile-context';
+import {
+  registerForPushNotifications,
+  savePushToken,
+  setupNotificationListeners,
+} from '../../shared/services/notification-service';
 import AuthNavigator from '../../features/auth/navigation/auth-navigator';
 import OnboardingNavigator from '../../features/onboarding/navigation/onboarding-navigator';
 import HomeScreen from '../../features/home/screens/home-screen';
@@ -76,6 +82,28 @@ function MainNavigator() {
 export default function RootNavigator() {
   const { user, isLoading } = useAuth();
   const { profile, isLoadingProfile } = useProfile();
+
+  // Register for push notifications only after the user has finished onboarding.
+  // Avoids showing the system permission dialog on the login/onboarding screens.
+  useEffect(() => {
+    if (!user || !profile?.onboardingComplete) return;
+
+    let cleanup: (() => void) | undefined;
+
+    async function setup() {
+      const token = await registerForPushNotifications();
+      if (token && user) {
+        await savePushToken(user.uid, token);
+      }
+      cleanup = setupNotificationListeners();
+    }
+
+    setup();
+
+    return () => {
+      cleanup?.();
+    };
+  }, [user?.uid, profile?.onboardingComplete]);
 
   if (isLoading || (user && isLoadingProfile)) {
     return (
