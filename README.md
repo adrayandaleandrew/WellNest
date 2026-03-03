@@ -224,6 +224,8 @@ All project standards and guidelines live in `docs/`:
 | 16 | Bug fixes (post-phase 15) | Complete |
 | 17 | Mobile E2E tests | Complete |
 | 18 | Documentation & rules cleanup | Complete |
+| 19 | Unit test coverage (~70–80% service layer) | Complete |
+| 20 | Firebase Cloud Functions (user stub + analytics) | Complete |
 
 See [Todos.md](docs/Todos.md) for the full specification and task breakdown.
 

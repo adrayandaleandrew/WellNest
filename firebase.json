@@ -4,7 +4,8 @@
     "indexes": "backend/firestore/firestore.indexes.json"
   },
   "functions": {
-    "source": "backend/functions"
+    "source": "backend/functions",
+    "runtime": "nodejs20"
   },
   "hosting": {
     "public": "admin/dist",
