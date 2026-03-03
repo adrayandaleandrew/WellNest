@@ -13,7 +13,7 @@ A mobile-first health and fitness app designed for beginners and health-consciou
 | Backend | Firebase Cloud Functions |
 | Database | Firestore (NoSQL) |
 | Auth | Firebase Authentication |
-| Testing | Jest (unit), Playwright (E2E) |
+| Testing | Vitest (unit), Playwright (E2E) |
 
 ---
 
@@ -226,6 +226,7 @@ All project standards and guidelines live in `docs/`:
 | 18 | Documentation & rules cleanup | Complete |
 | 19 | Unit test coverage (~70–80% service layer) | Complete |
 | 20 | Firebase Cloud Functions (user stub + analytics) | Complete |
+| 21 | Analytics wiring + Cloud Functions tests | Complete |
 
 See [Todos.md](docs/Todos.md) for the full specification and task breakdown.
 

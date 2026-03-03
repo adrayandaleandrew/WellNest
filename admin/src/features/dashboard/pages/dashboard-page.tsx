@@ -1,15 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { collection, getDocs, collectionGroup } from 'firebase/firestore';
-import { db } from '../../../shared/services/firebase';
+import { getAnalyticsSummary, type AnalyticsSummary } from '../services/analytics-service';
 import SeedPanel from '../../setup/components/seed-panel';
-
-type Stats = {
-  totalUsers: number;
-  totalWorkouts: number;
-  totalMeals: number;
-  totalWorkoutLogs: number;
-};
 
 // Inline SVG icons — no icon library dependency
 function IconUsers() {
@@ -58,6 +50,8 @@ function IconArrowRight() {
   );
 }
 
+type Stats = Pick<AnalyticsSummary, 'totalUsers' | 'totalWorkouts' | 'totalMeals' | 'totalWorkoutLogs'>;
+
 const STAT_CARDS: Array<{
   key: keyof Stats;
   label: string;
@@ -71,45 +65,18 @@ const STAT_CARDS: Array<{
 ];
 
 export default function DashboardPage() {
-  const [stats, setStats] = useState<Stats | null>(null);
+  const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadStats() {
       try {
-        // Use allSettled so a single failing query (e.g. users or workoutLogs blocked
-        // by old security rules) doesn't wipe out the counts we CAN read.
-        // collectionGroup('workoutLogs') requires the new admin rules to be deployed.
-        const [usersResult, workoutsResult, mealsResult, logsResult] = await Promise.allSettled([
-          getDocs(collection(db, 'users')),
-          getDocs(collection(db, 'workouts')),
-          getDocs(collection(db, 'meals')),
-          // collectionGroup requires a Firestore collection group index — silently
-          // defaults to 0 if the index hasn't been deployed yet
-          getDocs(collectionGroup(db, 'workoutLogs')),
-        ]);
-
-        const get = (r: PromiseSettledResult<{ size: number }>) =>
-          r.status === 'fulfilled' ? r.value.size : 0;
-
-        setStats({
-          totalUsers: get(usersResult),
-          totalWorkouts: get(workoutsResult),
-          totalMeals: get(mealsResult),
-          totalWorkoutLogs: get(logsResult),
-        });
-
-        // Only warn if the core queries (users/workouts/meals) are blocked —
-        // workoutLogs can silently fail until the collection group index is deployed
-        const coresFailed = [usersResult, workoutsResult, mealsResult].some(
-          (r) => r.status === 'rejected'
-        );
-        if (coresFailed) {
-          setError('Some stats are unavailable — check that your UID is in the admins collection and the security rules are deployed.');
-        }
+        const data = await getAnalyticsSummary();
+        // null means the Cloud Function hasn't run yet — show zeros on first deploy
+        setSummary(data);
       } catch {
-        setError('Failed to load analytics.');
+        setError('Failed to load analytics. Check that your UID is in the admins collection and security rules are deployed.');
       } finally {
         setIsLoading(false);
       }
@@ -117,6 +84,9 @@ export default function DashboardPage() {
 
     loadStats();
   }, []);
+
+  const totalWorkouts = summary?.totalWorkouts ?? 0;
+  const totalMeals = summary?.totalMeals ?? 0;
 
   return (
     <div className="p-8">
@@ -136,8 +106,8 @@ export default function DashboardPage() {
       {/* Seed panel — only visible when workouts and meals are both empty */}
       {!isLoading && (
         <SeedPanel
-          totalWorkouts={stats?.totalWorkouts ?? 0}
-          totalMeals={stats?.totalMeals ?? 0}
+          totalWorkouts={totalWorkouts}
+          totalMeals={totalMeals}
         />
       )}
 
@@ -157,7 +127,7 @@ export default function DashboardPage() {
                   {icon}
                 </div>
                 <div className="text-3xl font-semibold text-gray-900 mb-1">
-                  {stats?.[key] ?? 0}
+                  {summary?.[key] ?? 0}
                 </div>
                 <div className="text-sm text-gray-500">{label}</div>
               </>
@@ -165,6 +135,15 @@ export default function DashboardPage() {
           </div>
         ))}
       </div>
+
+      {/* Last updated timestamp from Cloud Function */}
+      {!isLoading && (
+        <p className="text-xs text-gray-400 mb-6">
+          {summary?.lastUpdated
+            ? `Last updated: ${new Date(summary.lastUpdated).toLocaleString()}`
+            : 'Pending first nightly run'}
+        </p>
+      )}
 
       {/* Quick nav */}
       <div className="bg-white border border-gray-200 rounded-lg divide-y divide-gray-100">
