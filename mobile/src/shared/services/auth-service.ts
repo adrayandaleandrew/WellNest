@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   type User as FirebaseUser,
   type Unsubscribe,
 } from 'firebase/auth';
@@ -24,4 +25,8 @@ export function subscribeToAuthChanges(
   callback: (user: FirebaseUser | null) => void,
 ): Unsubscribe {
   return onAuthStateChanged(auth, callback);
+}
+
+export function sendPasswordReset(email: string) {
+  return sendPasswordResetEmail(auth, email);
 }
