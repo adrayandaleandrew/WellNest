@@ -38,7 +38,7 @@ export default function WorkoutModeScreen({ route, navigation }: Props) {
 
   if (session.phase === 'rest') {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={['bottom']}>
         <View style={styles.header}>
           <Pressable
             onPress={handleBack}

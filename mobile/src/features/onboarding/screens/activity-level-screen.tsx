@@ -58,7 +58,7 @@ export default function ActivityLevelScreen(_props: Props) {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <StepProgressBar currentStep={4} totalSteps={4} />
       <ScrollView contentContainerStyle={styles.content} pointerEvents={isSubmitting ? 'none' : 'auto'}>
         <Text style={styles.title}>Activity Level</Text>
