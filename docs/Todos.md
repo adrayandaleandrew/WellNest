@@ -980,6 +980,33 @@ explicitly excluded the bottom inset, and screens with no `edges` prop left it u
 
 ---
 
+# ✅ PHASE 24 — BUG FIX (POST-PHASE-23 TESTING)
+
+## Objective
+
+Fix keyboard-dismissal nav bar overlap on the "About You" onboarding screen. No new features, no new dependencies.
+
+---
+
+## Root Cause
+
+`<View style={styles.footer}>` (holding the "Next" button) sat **outside** `KeyboardAvoidingView` but inside `SafeAreaView`. With `edgeToEdgeEnabled: true` and `behavior='height'`, KAV height restoration and `SafeAreaView` bottom-inset update ran as separate layout passes on keyboard dismiss — causing the footer to briefly (or persistently) render behind the Android system nav bar.
+
+---
+
+## Tasks
+
+- [x] Fix `basic-info-screen.tsx` — move footer `<View>` inside `KeyboardAvoidingView` (after `</ScrollView>`, before `</KeyboardAvoidingView>`)
+
+---
+
+## Acceptance Criteria
+
+- Tap any input → keyboard opens → dismiss keyboard → "Next" button fully visible above nav bar
+- No regression on goal-selection, health-flags, activity-level screens
+
+---
+
 # 📌 NON-GOALS (FOR NOW)
 
 - AI coaching
