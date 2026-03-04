@@ -45,7 +45,7 @@ export default function WorkoutCompleteScreen({ route, navigation }: Props) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['bottom']}>
       <FadeInView duration={500} style={styles.fadeWrapper}>
         <View style={styles.body}>
           <Text style={styles.emoji}>&#127881;</Text>

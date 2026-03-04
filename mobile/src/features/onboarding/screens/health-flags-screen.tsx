@@ -43,7 +43,7 @@ export default function HealthFlagsScreen({ navigation }: Props) {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <StepProgressBar currentStep={3} totalSteps={4} />
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title}>Health Considerations</Text>
