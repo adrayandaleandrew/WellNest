@@ -940,6 +940,46 @@ Close three user-facing gaps identified in a full codebase review: no password r
 
 ---
 
+# ✅ PHASE 23 — BUG FIXES (POST-PHASE-22 TESTING)
+
+## Objective
+
+Fix Android system navigation bar overlap caused by `edgeToEdgeEnabled: true` in `app.json`.
+No architecture changes, no new dependencies.
+
+---
+
+## Root Cause
+
+`edgeToEdgeEnabled: true` makes content draw behind system bars. Screens with `edges={['top']}`
+explicitly excluded the bottom inset, and screens with no `edges` prop left it unreliable.
+
+---
+
+## Tasks
+
+- [x] Fix `basic-info-screen.tsx` — `edges={['top']}` → `edges={['top', 'bottom']}`
+- [x] Fix `goal-selection-screen.tsx` — `edges={['top']}` → `edges={['top', 'bottom']}`
+- [x] Fix `health-flags-screen.tsx` — `edges={['top']}` → `edges={['top', 'bottom']}`
+- [x] Fix `activity-level-screen.tsx` — `edges={['top']}` → `edges={['top', 'bottom']}`
+- [x] Fix `home-screen.tsx` — add `edges={['bottom']}`
+- [x] Fix `login-screen.tsx` — add `edges={['bottom']}`
+- [x] Fix `register-screen.tsx` — add `edges={['bottom']}`
+- [x] Fix `forgot-password-screen.tsx` — add `edges={['bottom']}`
+- [x] Fix `workout-complete-screen.tsx` — add `edges={['bottom']}`
+- [x] Fix `workout-mode-screen.tsx` — add `edges={['bottom']}` (both SafeAreaViews)
+
+---
+
+## Acceptance Criteria
+
+- Onboarding "Next" / "Complete" button fully visible above system nav bar
+- Home water tracker not hidden under nav bar
+- Login / Register / ForgotPassword buttons not covered
+- Workout Mode "Complete Set" button fully visible
+
+---
+
 # 📌 NON-GOALS (FOR NOW)
 
 - AI coaching
