@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getAnalyticsSummary, type AnalyticsSummary } from '../services/analytics-service';
+import { getAnalyticsSummary, getLiveCollectionCounts, type AnalyticsSummary } from '../services/analytics-service';
 import SeedPanel from '../../setup/components/seed-panel';
 
 // Inline SVG icons — no icon library dependency
@@ -68,25 +68,34 @@ export default function DashboardPage() {
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [liveWorkouts, setLiveWorkouts] = useState(0);
+  const [liveMeals, setLiveMeals] = useState(0);
 
   useEffect(() => {
     async function loadStats() {
+      // Analytics summary (requires admin UID in admins collection)
       try {
         const data = await getAnalyticsSummary();
         // null means the Cloud Function hasn't run yet — show zeros on first deploy
         setSummary(data);
       } catch {
         setError('Failed to load analytics. Check that your UID is in the admins collection and security rules are deployed.');
-      } finally {
-        setIsLoading(false);
       }
+
+      // Live counts for seed panel — readable by any authenticated user
+      try {
+        const counts = await getLiveCollectionCounts();
+        setLiveWorkouts(counts.workouts);
+        setLiveMeals(counts.meals);
+      } catch {
+        // Non-critical — seed panel stays visible if this fails
+      }
+
+      setIsLoading(false);
     }
 
     loadStats();
   }, []);
-
-  const totalWorkouts = summary?.totalWorkouts ?? 0;
-  const totalMeals = summary?.totalMeals ?? 0;
 
   return (
     <div className="p-8">
@@ -106,8 +115,8 @@ export default function DashboardPage() {
       {/* Seed panel — only visible when workouts and meals are both empty */}
       {!isLoading && (
         <SeedPanel
-          totalWorkouts={totalWorkouts}
-          totalMeals={totalMeals}
+          totalWorkouts={liveWorkouts}
+          totalMeals={liveMeals}
         />
       )}
 
