@@ -113,10 +113,10 @@ export default function BasicInfoScreen({ navigation }: Props) {
           </View>
         </View>
       </ScrollView>
-      </KeyboardAvoidingView>
       <View style={styles.footer}>
         <PrimaryButton title="Next" onPress={handleNext} />
       </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
